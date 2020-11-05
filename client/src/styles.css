@@ -14,28 +14,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.spinner {
-  display: block;
-  margin: auto;
-}
-
-mat-label {
-  font-weight: 500;
-  font-size: 16px;
-}
-
-.btn-green {
-  color: green;
-}
-
-.warn {
-  color: red;
-}
-
-.green {
-  color: green;
-}
-
-.red {
-  color: red;
+.wrapper {
+  height: 100%;
 }

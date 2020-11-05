@@ -1,0 +1,28 @@
+<section class="wrapper member-login">
+  <form [formGroup]="form" class="form">
+    <h1>Admin login</h1>
+
+    <div class="input-wrapper">
+      <p>Enter your email</p>
+      <mat-form-field appearance="outline">
+        <input formControlName="email" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="input-wrapper">
+      <p>Enter your password</p>
+      <mat-form-field appearance="outline">
+        <input formControlName="password" type="password" matInput />
+      </mat-form-field>
+    </div>
+
+    <button
+      [disabled]="form.invalid"
+      type="submit"
+      mat-raised-button
+      color="primary"
+    >
+      Login
+    </button>
+  </form>
+</section>

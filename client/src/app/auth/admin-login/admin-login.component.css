@@ -1,0 +1,22 @@
+.member-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.member-login form h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.input-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.member-login form button {
+  display: block;
+  margin: auto;
+}

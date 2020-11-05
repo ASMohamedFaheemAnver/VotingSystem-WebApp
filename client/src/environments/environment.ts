@@ -4,12 +4,6 @@
 
 export const environment = {
   production: false,
-  backeEndBaseUrl2: "",
-  backEndGraphQlUrl2: "http://localhost:3333/graphql",
-  backEndPicUploadUrl2: "http://localhost:3333/upload-profile",
-  backeEndBaseUrl: "",
-  backEndGraphQlUrl: "https://freedom-sms.herokuapp.com/graphql",
-  backEndPicUploadUrl: "https://freedom-sms.herokuapp.com/upload-profile",
 };
 
 /*

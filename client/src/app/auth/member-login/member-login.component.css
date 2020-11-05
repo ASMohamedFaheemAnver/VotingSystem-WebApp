@@ -1,0 +1,14 @@
+.member-login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 300px;
+}
+
+button {
+  width: 100px;
+}
