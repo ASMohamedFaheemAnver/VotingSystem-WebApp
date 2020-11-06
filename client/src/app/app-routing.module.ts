@@ -4,6 +4,7 @@ import { AdminHomeComponent } from "./admin/admin-home/admin-home.component";
 import { AdminLoginComponent } from "./auth/admin-login/admin-login.component";
 import { AuthGuard } from "./auth/auth.guard";
 import { MemberLoginComponent } from "./auth/member-login/member-login.component";
+import { MemberHomeComponent } from "./member/member-home/member-home.component";
 const routes: Routes = [
   {
     path: "",
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: "admin/admin-home",
     component: AdminHomeComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "member/member-home",
+    component: MemberHomeComponent,
     canActivate: [AuthGuard],
   },
   {

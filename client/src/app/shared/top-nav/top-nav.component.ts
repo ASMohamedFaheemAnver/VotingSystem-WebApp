@@ -31,12 +31,16 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
         if (this.userCategory === "developer") {
           this.homeUrl = "admin/admin-home";
+        } else if (this.userCategory === "member") {
+          this.homeUrl = "member/member-home";
         } else {
           this.homeUrl = "auth/member-login";
         }
       });
     if (this.userCategory === "developer") {
       this.homeUrl = "admin/admin-home";
+    } else if (this.userCategory === "member") {
+      this.homeUrl = "member/member-home";
     } else {
       this.homeUrl = "auth/member-login";
     }

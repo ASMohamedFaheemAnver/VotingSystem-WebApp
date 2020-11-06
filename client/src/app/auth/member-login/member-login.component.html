@@ -1,7 +1,7 @@
 <section class="wrapper member-login">
   <h1>Enter your secret</h1>
   <mat-form-field appearance="fill">
-    <input matInput [type]="hide ? 'password' : 'text'" />
+    <input #secret matInput [type]="hide ? 'password' : 'text'" />
     <button
       mat-icon-button
       matSuffix
@@ -12,5 +12,11 @@
       <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
     </button>
   </mat-form-field>
-  <button mat-raised-button color="primary">Verify</button>
+  <button
+    (click)="onMemberLogin(secret.value)"
+    mat-raised-button
+    color="primary"
+  >
+    Verify
+  </button>
 </section>

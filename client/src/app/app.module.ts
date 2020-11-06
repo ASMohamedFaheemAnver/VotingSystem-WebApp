@@ -14,6 +14,7 @@ import { AdminLoginComponent } from "./auth/admin-login/admin-login.component";
 import { ErrorInterceptor } from "./error-interceptor";
 import { ErrorComponent } from "./error/error.component";
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { MemberHomeComponent } from './member/member-home/member-home.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
     AdminLoginComponent,
     ErrorComponent,
     AdminHomeComponent,
+    MemberHomeComponent,
   ],
   imports: [
     BrowserModule,

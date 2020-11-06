@@ -77,10 +77,45 @@ export class AuthService {
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
         this.userCategory = "developer";
+        this.isUserLoggedIn = true;
         this.saveAuthData(token, expirationDate, userId, this.userCategory);
         this.setAuthTimer(expiresIn);
-        this.router.navigateByUrl("admin/admin-home");
         this.userCategoryListenner.next(this.userCategory);
+        this.authStatusListenner.next(true);
+        this.router.navigateByUrl("admin/admin-home");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+
+  public loginMember(secret: string) {
+    const loginMember = gql`
+      query {
+          loginMember(data: { secret: "${secret}" }) {
+            _id
+            token
+            expiresIn
+          }
+        }
+    `;
+
+    this.client
+      .query({ query: loginMember })
+      .then((res) => {
+        console.log(res);
+        const expiresIn = res["data"].loginMember.expiresIn;
+        const userId = res["data"].loginMember._id;
+        const token = res["data"].loginMember.token;
+        const now = new Date();
+        const expirationDate = new Date(now.getTime() + expiresIn * 1000);
+        this.userCategory = "member";
+        this.isUserLoggedIn = true;
+        this.saveAuthData(token, expirationDate, userId, this.userCategory);
+        this.setAuthTimer(expiresIn);
+        this.userCategoryListenner.next(this.userCategory);
+        this.authStatusListenner.next(true);
+        this.router.navigateByUrl("member/member-home");
       })
       .catch((err) => {
         console.log(err.message);
@@ -152,8 +187,12 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.userId = null;
+    if (this.userCategory === "developer") {
+      this.router.navigateByUrl("/auth/admin-login");
+    } else {
+      this.router.navigateByUrl("/");
+    }
     this.userCategory = null;
-    this.router.navigateByUrl("/");
   }
 
   isUserAuth() {
