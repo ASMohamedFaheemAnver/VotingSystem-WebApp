@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { MemberService } from "../member.service";
 
 @Component({
-  selector: 'app-member-home',
-  templateUrl: './member-home.component.html',
-  styleUrls: ['./member-home.component.css']
+  selector: "app-member-home",
+  templateUrl: "./member-home.component.html",
+  styleUrls: ["./member-home.component.css"],
 })
 export class MemberHomeComponent implements OnInit {
-
-  constructor() { }
+  constructor(private memberService: MemberService) {}
 
   ngOnInit(): void {
+    this.memberService.getAllPositions();
   }
-
 }
