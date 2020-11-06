@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
-import { MemberLoginComponent } from './auth/member-login/member-login.component';
+import { AdminHomeComponent } from "./admin/admin-home/admin-home.component";
+import { AdminLoginComponent } from "./auth/admin-login/admin-login.component";
+import { MemberLoginComponent } from "./auth/member-login/member-login.component";
 const routes: Routes = [
   {
     path: "",
@@ -11,19 +12,22 @@ const routes: Routes = [
 
   {
     path: "auth/member-login",
-    component: MemberLoginComponent
+    component: MemberLoginComponent,
   },
-  
+
   {
     path: "auth/admin-login",
-    component: AdminLoginComponent
+    component: AdminLoginComponent,
+  },
+  {
+    path: "admin/admin-home",
+    component: AdminHomeComponent,
   },
   {
     path: "**",
     redirectTo: "auth/member-login",
     pathMatch: "full",
   },
-  
 ];
 
 @NgModule({

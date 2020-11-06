@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { AuthService } from "../auth.service";
 
 @Component({
-  selector: 'app-admin-login',
-  templateUrl: './admin-login.component.html',
-  styleUrls: ['./admin-login.component.css']
+  selector: "app-admin-login",
+  templateUrl: "./admin-login.component.html",
+  styleUrls: ["./admin-login.component.css"],
 })
 export class AdminLoginComponent implements OnInit {
-form: FormGroup;
-  constructor() { }
+  form: FormGroup;
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -21,4 +22,10 @@ form: FormGroup;
     });
   }
 
+  onLoginDeveloper() {
+    console.log({ adminLoginFormData: this.form.value });
+    this.authService.loginDeveloper({
+      ...this.form.value,
+    });
+  }
 }

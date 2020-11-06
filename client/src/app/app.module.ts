@@ -8,9 +8,12 @@ import { AngularMaterialModule } from "./angular-material.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatNativeDateModule } from "@angular/material/core";
-import { TopNavComponent } from './shared/top-nav/top-nav.component';
-import { MemberLoginComponent } from './auth/member-login/member-login.component';
-import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
+import { TopNavComponent } from "./shared/top-nav/top-nav.component";
+import { MemberLoginComponent } from "./auth/member-login/member-login.component";
+import { AdminLoginComponent } from "./auth/admin-login/admin-login.component";
+import { ErrorInterceptor } from "./error-interceptor";
+import { ErrorComponent } from "./error/error.component";
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
     TopNavComponent,
     MemberLoginComponent,
     AdminLoginComponent,
+    ErrorComponent,
+    AdminHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,11 +35,13 @@ import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
     MatNativeDateModule,
   ],
   providers: [
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [
-
-  ],
+  entryComponents: [],
 })
 export class AppModule {}
