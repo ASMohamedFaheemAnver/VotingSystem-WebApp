@@ -72,4 +72,80 @@ export class AdminService {
         console.log(err);
       });
   }
+
+  enableFirstPoll() {
+    const enableFirstPoll = gql`
+      mutation {
+        enableFirstPoll {
+          msg
+        }
+      }
+    `;
+
+    this.client
+      .mutate({ mutation: enableFirstPoll })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  disableFirstPoll() {
+    const disableFirstPoll = gql`
+      mutation {
+        disableFirstPoll {
+          msg
+        }
+      }
+    `;
+
+    this.client
+      .mutate({ mutation: disableFirstPoll })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  enableSecondPoll() {
+    const enableSecondPoll = gql`
+      mutation {
+        enableSecondPoll {
+          msg
+        }
+      }
+    `;
+
+    this.client
+      .mutate({ mutation: enableSecondPoll })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  disableSecondPoll() {
+    const disableSecondPoll = gql`
+      mutation {
+        disableSecondPoll {
+          msg
+        }
+      }
+    `;
+
+    this.client
+      .mutate({ mutation: disableSecondPoll })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }

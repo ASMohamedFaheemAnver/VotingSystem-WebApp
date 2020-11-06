@@ -6,11 +6,19 @@
     View members
   </button>
   <h1>First poll actions</h1>
-  <button mat-raised-button color="primary">Trigger first poll</button>
-  <button mat-raised-button color="warn">Disable first poll</button>
+  <button mat-raised-button color="primary" (click)="onEnableFirstPoll()">
+    Trigger first poll
+  </button>
+  <button mat-raised-button color="warn" (click)="onDisableFirstPoll()">
+    Disable first poll
+  </button>
   <button mat-raised-button color="primary">Get first poll results</button>
   <h1>Second poll actions</h1>
-  <button mat-raised-button color="primary">Trigger second poll</button>
-  <button mat-raised-button color="warn">Disable second poll</button>
+  <button mat-raised-button color="primary" (click)="onEnableSecondPoll()">
+    Trigger second poll
+  </button>
+  <button mat-raised-button color="warn" (click)="onDisableSecondPoll()">
+    Disable second poll
+  </button>
   <button mat-raised-button color="primary">Get second poll results</button>
 </section>
