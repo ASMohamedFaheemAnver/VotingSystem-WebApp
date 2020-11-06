@@ -1,1 +1,4 @@
-<mat-toolbar class="mat-elevation-z6">Online voting system</mat-toolbar>
+<mat-toolbar class="mat-elevation-z6">
+  <a href="{{ homeUrl }}" routerLink="{{ homeUrl }}">Online voting system</a>
+  <button *ngIf="isAuth" mat-button (click)="onLogout()">Logout</button>
+</mat-toolbar>

@@ -20,6 +20,7 @@ export class AuthService {
   private backEndUrl = environment.backEndUrl;
 
   private authStatusListenner = new Subject<boolean>();
+  private userCategoryListenner = new Subject<string>();
 
   constructor(private router: Router, private http: HttpClient) {
     this.client = new ApolloBoost({
@@ -29,6 +30,10 @@ export class AuthService {
 
   getAuthStatusListener() {
     return this.authStatusListenner;
+  }
+
+  getUserCategoryStatusListener() {
+    return this.userCategoryListenner;
   }
 
   public loginDeveloper(developerLoginInput: DeveloperLoginInput) {
@@ -71,9 +76,11 @@ export class AuthService {
         const token = res["data"].loginDeveloper.token;
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
-        this.saveAuthData(token, expirationDate, userId, "developer");
+        this.userCategory = "developer";
+        this.saveAuthData(token, expirationDate, userId, this.userCategory);
         this.setAuthTimer(expiresIn);
         this.router.navigateByUrl("admin/admin-home");
+        this.userCategoryListenner.next(this.userCategory);
       })
       .catch((err) => {
         console.log(err.message);
