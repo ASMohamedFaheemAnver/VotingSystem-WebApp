@@ -15,6 +15,7 @@ import { ErrorInterceptor } from "./error-interceptor";
 import { ErrorComponent } from "./error/error.component";
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { MemberHomeComponent } from './member/member-home/member-home.component';
+import { ViewMembersComponent } from './admin/view-members/view-members.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MemberHomeComponent } from './member/member-home/member-home.component'
     ErrorComponent,
     AdminHomeComponent,
     MemberHomeComponent,
+    ViewMembersComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,38 @@
+<section class="members" *ngIf="members">
+  <h1>Second year</h1>
+  <div class="row">
+    <p>Secret</p>
+    <p>Year</p>
+    <p>Gender</p>
+  </div>
+  <div class="row" *ngFor="let member of members.second">
+    <!-- {{ member | json }} -->
+    <p>{{ member.secret }}</p>
+    <p>{{ member.year }}</p>
+    <p>{{ member.gender }}</p>
+  </div>
+  <h1>Third year</h1>
+  <div class="row">
+    <p>Secret</p>
+    <p>Year</p>
+    <p>Gender</p>
+  </div>
+  <div class="row" *ngFor="let member of members.third">
+    <!-- {{ member | json }} -->
+    <p>{{ member.secret }}</p>
+    <p>{{ member.year }}</p>
+    <p>{{ member.gender }}</p>
+  </div>
+  <h1>Forth year</h1>
+  <div class="row">
+    <p>Secret</p>
+    <p>Year</p>
+    <p>Gender</p>
+  </div>
+  <div class="row" *ngFor="let member of members.fourth">
+    <!-- {{ member | json }} -->
+    <p>{{ member.secret }}</p>
+    <p>{{ member.year }}</p>
+    <p>{{ member.gender }}</p>
+  </div>
+</section>
