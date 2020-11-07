@@ -31,4 +31,8 @@ export class SelectPersonDialogComponent implements OnInit, OnDestroy {
         });
       });
   }
+
+  onSelectMember(member: Member) {
+    console.log({ selectedMember: member, position: this.data });
+  }
 }

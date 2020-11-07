@@ -2,7 +2,15 @@
   <div class="form-controll" *ngFor="let position of positions">
     <p>{{ position.title }}</p>
     <button mat-raised-button (click)="onSelectPerson(position)">
-      - Please select -
+      {{ position.to ? position.to._id : "- Please select -" }}
     </button>
   </div>
+  <button
+    (click)="onCreateVotes()"
+    class="submit"
+    mat-raised-button
+    color="primary"
+  >
+    Submit
+  </button>
 </section>

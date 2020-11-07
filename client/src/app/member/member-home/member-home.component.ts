@@ -36,5 +36,14 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
       SelectPersonDialogComponent,
       { data: position, /*disableClose: true,*/ maxWidth: "90vw" }
     );
+
+    selectPersonDialogRef.afterClosed().subscribe((member) => {
+      console.log({ memberHomeSelectedMember: member, position: position });
+      position.to = member;
+    });
+  }
+
+  onCreateVotes() {
+    this.memberService.createVotes(this.positions);
   }
 }

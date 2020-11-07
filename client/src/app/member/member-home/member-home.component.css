@@ -9,6 +9,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 35%;
+  width: 50%;
   margin: 20px 0;
+}
+
+.submit {
+  width: 200px;
+  margin-top: 20px;
+}
+
+.form-controll button {
+  width: 300px;
 }

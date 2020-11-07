@@ -54,14 +54,49 @@ export class MemberService {
     });
   }
 
-  createVotes() {
+  createVotes(positions: Position[]) {
     const createVotes = gql`
       mutation {
-        createVotes(data: []) {
+        createVotes(
+          data: [
+            {
+              position: "${positions[0]._id}"
+              to: "${positions[0].to._id}"
+            }
+            {
+              position: "${positions[1]._id}"
+              to: "${positions[1].to._id}"
+            }
+            {
+              position: "${positions[2]._id}"
+              to: "${positions[2].to._id}"
+            }
+            {
+              position: "${positions[3]._id}"
+              to: "${positions[3].to._id}"
+            }
+            {
+              position: "${positions[4]._id}"
+              to: "${positions[4].to._id}"
+            }
+            {
+             position: "${positions[5]._id}"
+              to: "${positions[5].to._id}"
+            }
+            {
+              position: "${positions[6]._id}"
+              to: "${positions[6].to._id}"
+            }
+          ]
+        ) {
           _id
         }
       }
     `;
+
+    this.client.mutate({ mutation: createVotes }).then((res) => {
+      console.log(res);
+    });
   }
 
   getAllMembersByPosition(position: string) {

@@ -1,7 +1,11 @@
 <section class="wrapper">
   <h1>- Select a person -</h1>
   <mat-dialog-content>
-    <div class="member" *ngFor="let member of membersByPosition">
+    <div
+      [mat-dialog-close]="member"
+      class="member"
+      *ngFor="let member of membersByPosition"
+    >
       <p>{{ member._id }}</p>
     </div>
   </mat-dialog-content>
