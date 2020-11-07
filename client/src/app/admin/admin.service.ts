@@ -4,7 +4,7 @@ import ApolloBoost, { gql } from "apollo-boost";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
-import { Member } from "../model/member/member.model";
+import { Member } from "../model/member.model";
 
 @Injectable({
   providedIn: "root",

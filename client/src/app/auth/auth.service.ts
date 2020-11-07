@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import ApolloBoost, { gql } from "apollo-boost";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
-import { DeveloperLoginInput } from "../model/auth/developer-login-input.model";
+import { DeveloperLoginInput } from "../model/developer-login-input.model";
 
 @Injectable({
   providedIn: "root",
@@ -78,6 +78,7 @@ export class AuthService {
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
         this.userCategory = "developer";
         this.isUserLoggedIn = true;
+        this.token = token;
         this.saveAuthData(token, expirationDate, userId, this.userCategory);
         this.setAuthTimer(expiresIn);
         this.userCategoryListenner.next(this.userCategory);
@@ -111,6 +112,7 @@ export class AuthService {
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
         this.userCategory = "member";
         this.isUserLoggedIn = true;
+        this.token = token;
         this.saveAuthData(token, expirationDate, userId, this.userCategory);
         this.setAuthTimer(expiresIn);
         this.userCategoryListenner.next(this.userCategory);

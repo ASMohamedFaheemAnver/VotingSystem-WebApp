@@ -1,1 +1,8 @@
-<section class="member-home"></section>
+<section class="wrapper member-home">
+  <div class="form-controll" *ngFor="let position of positions">
+    <p>{{ position.title }}</p>
+    <button mat-raised-button (click)="onSelectPerson(position)">
+      - Please select -
+    </button>
+  </div>
+</section>

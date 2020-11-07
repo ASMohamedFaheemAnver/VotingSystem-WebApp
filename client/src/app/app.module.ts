@@ -13,9 +13,10 @@ import { MemberLoginComponent } from "./auth/member-login/member-login.component
 import { AdminLoginComponent } from "./auth/admin-login/admin-login.component";
 import { ErrorInterceptor } from "./error-interceptor";
 import { ErrorComponent } from "./error/error.component";
-import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
-import { MemberHomeComponent } from './member/member-home/member-home.component';
-import { ViewMembersComponent } from './admin/view-members/view-members.component';
+import { AdminHomeComponent } from "./admin/admin-home/admin-home.component";
+import { MemberHomeComponent } from "./member/member-home/member-home.component";
+import { ViewMembersComponent } from "./admin/view-members/view-members.component";
+import { SelectPersonDialogComponent } from "./member/select-person-dialog/select-person-dialog.component";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ViewMembersComponent } from './admin/view-members/view-members.componen
     AdminHomeComponent,
     MemberHomeComponent,
     ViewMembersComponent,
+    SelectPersonDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,6 @@ import { ViewMembersComponent } from './admin/view-members/view-members.componen
     },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [],
+  entryComponents: [SelectPersonDialogComponent],
 })
 export class AppModule {}
