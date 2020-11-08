@@ -35,6 +35,10 @@ export class AdminHomeComponent implements OnInit {
   }
 
   onFirstPollResult() {
-    this.router.navigateByUrl("admin/view-first-poll-result");
+    this.router.navigateByUrl("admin/view-poll-result/1");
+  }
+
+  onSecondPollResult() {
+    this.router.navigateByUrl("admin/view-poll-result/2");
   }
 }

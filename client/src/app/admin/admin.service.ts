@@ -162,7 +162,7 @@ export class AdminService {
       });
   }
 
-  getFirstPollResult() {
+  getFirstPollResult(pollCount: number) {
     const getFirstPollAllResult = gql`
       query {
         getFirstPollAllResult {
@@ -182,10 +182,50 @@ export class AdminService {
       }
     `;
 
-    this.client.query({ query: getFirstPollAllResult }).then((res) => {
-      this.pollResults = res["data"].getFirstPollAllResult;
-      console.log({ getFirstPollAllResult: this.pollResults });
-      this.pollResultsListenner.next(this.pollResults);
+    const getSecondPollAllResult = gql`
+      query {
+        getSecondPollAllResult {
+          position {
+            title
+          }
+          eligible_member_infos {
+            member {
+              _id
+              name
+              year
+              is_eligible
+            }
+            vote_recieved
+          }
+        }
+      }
+    `;
+
+    this.client
+      .query({
+        query: pollCount == 1 ? getFirstPollAllResult : getSecondPollAllResult,
+      })
+      .then((res) => {
+        this.pollResults =
+          pollCount == 1
+            ? res["data"].getFirstPollAllResult
+            : res["data"].getSecondPollAllResult;
+        console.log({ getAllPollResult: this.pollResults });
+        this.pollResultsListenner.next(this.pollResults);
+      });
+  }
+
+  makeAMemberEligible(_id: string) {
+    const makeAMemberEligible = gql`
+      mutation {
+        makeAMemberEligible(_id: "${_id}") {
+          msg
+        }
+      }
+    `;
+
+    this.client.mutate({ mutation: makeAMemberEligible }).then((res) => {
+      console.log({ makeAMemberEligible: res["data"].makeAMemberEligible });
     });
   }
 }

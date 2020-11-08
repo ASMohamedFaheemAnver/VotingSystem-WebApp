@@ -1,6 +1,6 @@
 <section class="wrapper admin-home">
-  <h1>Mutations</h1>
-  <button mat-raised-button color="primary">Create a member</button>
+  <!-- <h1>Mutations</h1>
+  <button mat-raised-button color="primary">Create a member</button> -->
   <h1>Queries</h1>
   <button mat-raised-button color="primary" (click)="onViewAllMembers()">
     View members
@@ -22,5 +22,7 @@
   <button mat-raised-button color="warn" (click)="onDisableSecondPoll()">
     Disable second poll
   </button>
-  <button mat-raised-button color="primary">Get second poll results</button>
+  <button mat-raised-button color="primary" (click)="onSecondPollResult()">
+    Get second poll results
+  </button>
 </section>

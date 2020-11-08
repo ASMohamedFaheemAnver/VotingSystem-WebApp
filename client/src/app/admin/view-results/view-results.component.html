@@ -6,7 +6,7 @@
         <p>Name</p>
         <p>Year</p>
         <p>Recieved Votes</p>
-        <p>Action</p>
+        <p *ngIf="pollCount === 1">Action</p>
       </div>
       <div
         class="member-info"
@@ -15,10 +15,18 @@
         <p>{{ memberInfo.member.name }}</p>
         <p>{{ memberInfo.member.year }}</p>
         <p>{{ memberInfo.vote_recieved }}</p>
-        <button mat-button *ngIf="!memberInfo.member.is_eligible">
+        <button
+          mat-button
+          *ngIf="!memberInfo.member.is_eligible && pollCount === 1"
+          (click)="onMakeEligible(memberInfo.member._id)"
+        >
           <span>Make eligible</span>
         </button>
-        <button mat-button *ngIf="memberInfo.member.is_eligible" color="warn">
+        <button
+          mat-button
+          *ngIf="memberInfo.member.is_eligible && pollCount === 1"
+          color="warn"
+        >
           <span>Remove from eligible</span>
         </button>
       </div>

@@ -29,7 +29,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: "admin/view-first-poll-result",
+    path: "admin/view-poll-result/:pollCount",
     component: ViewResultsComponent,
     canActivate: [AuthGuard],
   },

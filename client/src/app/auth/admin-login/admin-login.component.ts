@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -9,9 +11,18 @@ import { AuthService } from "../auth.service";
 })
 export class AdminLoginComponent implements OnInit {
   form: FormGroup;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
+  private isAuth = false;
+  private userCategory;
 
   ngOnInit(): void {
+    this.isAuth = this.authService.isUserAuth();
+    this.userCategory = this.authService.getUserCategory();
+    if (this.isAuth && this.userCategory === "admin") {
+      this.router.navigateByUrl("/admin/admin-home");
+    } else if (this.isAuth && this.userCategory === "member") {
+      this.router.navigateByUrl("/member/member-home");
+    }
     this.form = new FormGroup({
       email: new FormControl(null, {
         validators: [Validators.required, Validators.email],
