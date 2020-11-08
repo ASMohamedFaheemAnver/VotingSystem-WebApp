@@ -5,6 +5,7 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
 import { Member } from "../model/member.model";
+import { PollData } from "../model/poll-data.model";
 import { PollResult } from "../model/poll-result.model";
 
 @Injectable({
@@ -18,11 +19,13 @@ export class AdminService {
   private secondYearMembers: Member[] = [];
   private thirdYearMembers: Member[] = [];
   private fourthYearMembers: Member[] = [];
+  private pollData: PollData;
   private membersListenner = new Subject<{
     second: Member[];
     third: Member[];
     fourth: Member[];
   }>();
+  private pollDataListenner = new Subject<PollData>();
 
   private pollResultsListenner = new Subject<PollResult[]>();
 
@@ -37,6 +40,10 @@ export class AdminService {
 
   getMembersListener() {
     return this.membersListenner;
+  }
+
+  getPollDataListener() {
+    return this.pollDataListenner;
   }
 
   getpollResultsListenner() {
@@ -86,7 +93,7 @@ export class AdminService {
       });
   }
 
-  enableFirstPoll() {
+  enableFirstPoll(pollData: PollData) {
     const enableFirstPoll = gql`
       mutation {
         enableFirstPoll {
@@ -99,13 +106,14 @@ export class AdminService {
       .mutate({ mutation: enableFirstPoll })
       .then((res) => {
         console.log(res);
+        pollData.is_first_poll_enabled = true;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  disableFirstPoll() {
+  disableFirstPoll(pollData: PollData) {
     const disableFirstPoll = gql`
       mutation {
         disableFirstPoll {
@@ -118,13 +126,14 @@ export class AdminService {
       .mutate({ mutation: disableFirstPoll })
       .then((res) => {
         console.log(res);
+        pollData.is_first_poll_enabled = false;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  enableSecondPoll() {
+  enableSecondPoll(pollData: PollData) {
     const enableSecondPoll = gql`
       mutation {
         enableSecondPoll {
@@ -137,13 +146,14 @@ export class AdminService {
       .mutate({ mutation: enableSecondPoll })
       .then((res) => {
         console.log(res);
+        pollData.is_second_poll_enabled = true;
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  disableSecondPoll() {
+  disableSecondPoll(pollData: PollData) {
     const disableSecondPoll = gql`
       mutation {
         disableSecondPoll {
@@ -156,6 +166,7 @@ export class AdminService {
       .mutate({ mutation: disableSecondPoll })
       .then((res) => {
         console.log(res);
+        pollData.is_second_poll_enabled = false;
       })
       .catch((err) => {
         console.log(err);
@@ -226,6 +237,23 @@ export class AdminService {
 
     this.client.mutate({ mutation: makeAMemberEligible }).then((res) => {
       console.log({ makeAMemberEligible: res["data"].makeAMemberEligible });
+    });
+  }
+
+  getPollData() {
+    const getPollData = gql`
+      query {
+        getPollData {
+          is_first_poll_enabled
+          is_second_poll_enabled
+        }
+      }
+    `;
+
+    this.client.query({ query: getPollData }).then((res) => {
+      console.log({ getPollData: res["data"].getPollData });
+      this.pollData = res["data"].getPollData;
+      this.pollDataListenner.next(this.pollData);
     });
   }
 }

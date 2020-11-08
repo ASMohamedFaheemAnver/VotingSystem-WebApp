@@ -4,6 +4,7 @@ import { MemberService } from "../member.service";
 import { Position } from "../../model/position.model";
 import { MatDialog } from "@angular/material/dialog";
 import { SelectPersonDialogComponent } from "../select-person-dialog/select-person-dialog.component";
+import { MemberVoteData } from "src/app/model/member-vote-data.model";
 
 @Component({
   selector: "app-member-home",
@@ -16,7 +17,9 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
     private selectPersonDialog: MatDialog
   ) {}
   private positionsSub: Subscription;
+  private memberVoteDataSub: Subscription;
   public positions: Position[] = [];
+  public memberVoteData: MemberVoteData;
 
   ngOnInit(): void {
     this.memberService.getAllPositions();
@@ -25,6 +28,12 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
       .subscribe((positions) => {
         this.positions = positions;
       });
+    this.memberVoteDataSub = this.memberService
+      .getMemberVoteDataListener()
+      .subscribe((memberVoteData) => {
+        this.memberVoteData = memberVoteData;
+      });
+    this.memberService.getMemberVoteData();
   }
 
   ngOnDestroy(): void {

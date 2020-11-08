@@ -4,6 +4,7 @@ import ApolloBoost, { gql } from "apollo-boost";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
+import { MemberVoteData } from "../model/member-vote-data.model";
 import { Member } from "../model/member.model";
 import { Position } from "../model/position.model";
 
@@ -15,8 +16,10 @@ export class MemberService {
   private client;
   private positionsListenner = new Subject<Position[]>();
   private membersByPositionListenner = new Subject<Member[]>();
+  private memberVoteDataListenner = new Subject<MemberVoteData>();
   private positions: Position[] = [];
   private membersByPosition: Member[] = [];
+  private memberVoteData: MemberVoteData;
 
   constructor(private router: Router, private authService: AuthService) {
     this.client = new ApolloBoost({
@@ -29,6 +32,10 @@ export class MemberService {
 
   getPositionsListener() {
     return this.positionsListenner;
+  }
+
+  getMemberVoteDataListener() {
+    return this.memberVoteDataListenner;
   }
 
   getMembersByPositionListener() {
@@ -116,6 +123,23 @@ export class MemberService {
       this.membersByPosition = res.data.getAllMembersByPosition;
       console.log({ getAllMembersByPosition: this.membersByPosition });
       this.membersByPositionListenner.next([...this.membersByPosition]);
+    });
+  }
+
+  getMemberVoteData() {
+    const getMemberVoteData = gql`
+      query {
+        getMemberVoteData {
+          is_voted
+          current
+        }
+      }
+    `;
+
+    this.client.query({ query: getMemberVoteData }).then((res) => {
+      console.log({ getMemberVoteData: res.data.getMemberVoteData });
+      this.memberVoteData = res.data.getMemberVoteData;
+      this.memberVoteDataListenner.next(this.memberVoteData);
     });
   }
 }

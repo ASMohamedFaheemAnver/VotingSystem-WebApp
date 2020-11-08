@@ -1,4 +1,4 @@
-<section class="wrapper admin-home">
+<section class="wrapper admin-home" *ngIf="pollData">
   <!-- <h1>Mutations</h1>
   <button mat-raised-button color="primary">Create a member</button> -->
   <h1>Queries</h1>
@@ -6,20 +6,44 @@
     View members
   </button>
   <h1>First poll actions</h1>
-  <button mat-raised-button color="primary" (click)="onEnableFirstPoll()">
+  <button
+    [disabled]="
+      pollData.is_first_poll_enabled || pollData.is_second_poll_enabled
+    "
+    mat-raised-button
+    color="primary"
+    (click)="onEnableFirstPoll()"
+  >
     Trigger first poll
   </button>
-  <button mat-raised-button color="warn" (click)="onDisableFirstPoll()">
+  <button
+    [disabled]="!pollData.is_first_poll_enabled"
+    mat-raised-button
+    color="warn"
+    (click)="onDisableFirstPoll()"
+  >
     Disable first poll
   </button>
   <button mat-raised-button color="primary" (click)="onFirstPollResult()">
     Get first poll results
   </button>
   <h1>Second poll actions</h1>
-  <button mat-raised-button color="primary" (click)="onEnableSecondPoll()">
+  <button
+    [disabled]="
+      pollData.is_second_poll_enabled || pollData.is_first_poll_enabled
+    "
+    mat-raised-button
+    color="primary"
+    (click)="onEnableSecondPoll()"
+  >
     Trigger second poll
   </button>
-  <button mat-raised-button color="warn" (click)="onDisableSecondPoll()">
+  <button
+    [disabled]="!pollData.is_second_poll_enabled"
+    mat-raised-button
+    color="warn"
+    (click)="onDisableSecondPoll()"
+  >
     Disable second poll
   </button>
   <button mat-raised-button color="primary" (click)="onSecondPollResult()">

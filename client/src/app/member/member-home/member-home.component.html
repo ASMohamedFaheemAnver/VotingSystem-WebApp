@@ -1,4 +1,11 @@
-<section class="wrapper member-home">
+<section
+  *ngIf="
+    memberVoteData &&
+    memberVoteData.current !== 'none' &&
+    !memberVoteData.is_voted
+  "
+  class="wrapper member-home"
+>
   <div class="form-controll" *ngFor="let position of positions">
     <p>{{ position.title }}</p>
     <button mat-raised-button (click)="onSelectPerson(position)">
@@ -14,3 +21,16 @@
     Submit
   </button>
 </section>
+<div
+  *ngIf="memberVoteData && memberVoteData.current === 'none'"
+  class="form-controll wrapper member-home"
+>
+  <p>Please wait for the administrator to start the poll.</p>
+</div>
+
+<div
+  *ngIf="memberVoteData && memberVoteData.is_voted"
+  class="form-controll wrapper member-home"
+>
+  <p>Your vote was recorded.</p>
+</div>
