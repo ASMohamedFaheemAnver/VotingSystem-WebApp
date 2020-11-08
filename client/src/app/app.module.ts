@@ -17,6 +17,7 @@ import { AdminHomeComponent } from "./admin/admin-home/admin-home.component";
 import { MemberHomeComponent } from "./member/member-home/member-home.component";
 import { ViewMembersComponent } from "./admin/view-members/view-members.component";
 import { SelectPersonDialogComponent } from "./member/select-person-dialog/select-person-dialog.component";
+import { ViewResultsComponent } from './admin/view-results/view-results.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { SelectPersonDialogComponent } from "./member/select-person-dialog/selec
     MemberHomeComponent,
     ViewMembersComponent,
     SelectPersonDialogComponent,
+    ViewResultsComponent,
   ],
   imports: [
     BrowserModule,

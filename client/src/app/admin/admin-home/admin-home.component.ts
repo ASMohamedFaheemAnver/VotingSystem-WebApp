@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
+import { PollResult } from "src/app/model/poll-result.model";
 import { AdminService } from "../admin.service";
 
 @Component({
@@ -30,5 +32,9 @@ export class AdminHomeComponent implements OnInit {
 
   onDisableSecondPoll() {
     this.adminService.disableSecondPoll();
+  }
+
+  onFirstPollResult() {
+    this.router.navigateByUrl("admin/view-first-poll-result");
   }
 }

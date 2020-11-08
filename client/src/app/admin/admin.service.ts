@@ -5,6 +5,7 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
 import { Member } from "../model/member.model";
+import { PollResult } from "../model/poll-result.model";
 
 @Injectable({
   providedIn: "root",
@@ -13,6 +14,7 @@ export class AdminService {
   private client;
   private backEndUrl = environment.backEndUrl;
   private members: Member[];
+  private pollResults: PollResult[];
   private secondYearMembers: Member[] = [];
   private thirdYearMembers: Member[] = [];
   private fourthYearMembers: Member[] = [];
@@ -21,6 +23,8 @@ export class AdminService {
     third: Member[];
     fourth: Member[];
   }>();
+
+  private pollResultsListenner = new Subject<PollResult[]>();
 
   constructor(private router: Router, private authService: AuthService) {
     this.client = new ApolloBoost({
@@ -33,6 +37,10 @@ export class AdminService {
 
   getMembersListener() {
     return this.membersListenner;
+  }
+
+  getpollResultsListenner() {
+    return this.pollResultsListenner;
   }
 
   getAllMembers() {
@@ -152,5 +160,32 @@ export class AdminService {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  getFirstPollResult() {
+    const getFirstPollAllResult = gql`
+      query {
+        getFirstPollAllResult {
+          position {
+            title
+          }
+          eligible_member_infos {
+            member {
+              _id
+              name
+              year
+              is_eligible
+            }
+            vote_recieved
+          }
+        }
+      }
+    `;
+
+    this.client.query({ query: getFirstPollAllResult }).then((res) => {
+      this.pollResults = res["data"].getFirstPollAllResult;
+      console.log({ getFirstPollAllResult: this.pollResults });
+      this.pollResultsListenner.next(this.pollResults);
+    });
   }
 }

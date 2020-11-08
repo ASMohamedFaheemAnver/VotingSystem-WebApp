@@ -12,7 +12,9 @@
   <button mat-raised-button color="warn" (click)="onDisableFirstPoll()">
     Disable first poll
   </button>
-  <button mat-raised-button color="primary">Get first poll results</button>
+  <button mat-raised-button color="primary" (click)="onFirstPollResult()">
+    Get first poll results
+  </button>
   <h1>Second poll actions</h1>
   <button mat-raised-button color="primary" (click)="onEnableSecondPoll()">
     Trigger second poll

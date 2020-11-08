@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrapper h1 {
+  margin: 20px 0;
+}
+
+.inner-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.member-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.member-info {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.member-info:hover {
+  box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.member-info p,
+.member-info button {
+  flex: 1;
+  margin: 0;
+}

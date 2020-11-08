@@ -4,4 +4,5 @@ export interface Member {
   year: number;
   gender: string;
   name: string;
+  is_eligible: boolean;
 }
