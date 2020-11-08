@@ -104,6 +104,7 @@ export class MemberService {
       query {
         getAllMembersByPosition(position: "${position}") {
           _id
+          name
           secret
           year
           gender

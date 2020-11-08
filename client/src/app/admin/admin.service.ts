@@ -36,6 +36,7 @@ export class AdminService {
   }
 
   getAllMembers() {
+    console.log({ called: "getAllMembers" });
     const getAllMembers = gql`
       query {
         getAllMembers {
@@ -43,7 +44,7 @@ export class AdminService {
           secret
           year
           gender
-          # name
+          name
         }
       }
     `;
@@ -51,6 +52,10 @@ export class AdminService {
     this.client
       .query({ query: getAllMembers })
       .then((res) => {
+        this.fourthYearMembers = [];
+        this.thirdYearMembers = [];
+        this.secondYearMembers = [];
+        console.log({ getAllMembers: res["data"].getAllMembers });
         this.members = res["data"].getAllMembers;
         this.members.forEach((member) => {
           if (member.year === 4) {
