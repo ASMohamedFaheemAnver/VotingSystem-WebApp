@@ -237,6 +237,61 @@ export class AdminService {
 
     this.client.mutate({ mutation: makeAMemberEligible }).then((res) => {
       console.log({ makeAMemberEligible: res["data"].makeAMemberEligible });
+
+      this.pollResults = this.pollResults.map((pollResult) => {
+        return {
+          ...pollResult,
+          eligible_member_infos: pollResult.eligible_member_infos.map(
+            (member_info) => {
+              if (member_info.member._id === _id) {
+                return {
+                  ...member_info,
+                  member: { ...member_info.member, is_eligible: true },
+                };
+              }
+              return member_info;
+            }
+          ),
+        };
+      });
+
+      console.log({ getAllPollResult: this.pollResults });
+      this.pollResultsListenner.next([...this.pollResults]);
+    });
+  }
+
+  makeAMemberNotEligible(_id: string) {
+    const makeAMemberNotEligible = gql`
+      mutation {
+        makeAMemberNotEligible(_id: "${_id}") {
+          msg
+        }
+      }
+    `;
+
+    this.client.mutate({ mutation: makeAMemberNotEligible }).then((res) => {
+      console.log({
+        makeAMemberNotEligible: res["data"].makeAMemberNotEligible,
+      });
+      this.pollResults = this.pollResults.map((pollResult) => {
+        return {
+          ...pollResult,
+          eligible_member_infos: pollResult.eligible_member_infos.map(
+            (member_info) => {
+              if (member_info.member._id === _id) {
+                return {
+                  ...member_info,
+                  member: { ...member_info.member, is_eligible: false },
+                };
+              }
+              return member_info;
+            }
+          ),
+        };
+      });
+
+      console.log({ getAllPollResult: this.pollResults });
+      this.pollResultsListenner.next([...this.pollResults]);
     });
   }
 

@@ -136,10 +136,12 @@ export class MemberService {
       }
     `;
 
-    this.client.query({ query: getMemberVoteData }).then((res) => {
-      console.log({ getMemberVoteData: res.data.getMemberVoteData });
-      this.memberVoteData = res.data.getMemberVoteData;
-      this.memberVoteDataListenner.next(this.memberVoteData);
-    });
+    this.client
+      .query({ query: getMemberVoteData, fetchPolicy: "no-cache" })
+      .then((res) => {
+        console.log({ getMemberVoteData: res.data.getMemberVoteData });
+        this.memberVoteData = res.data.getMemberVoteData;
+        this.memberVoteDataListenner.next(this.memberVoteData);
+      });
   }
 }

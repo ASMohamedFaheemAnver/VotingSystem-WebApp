@@ -24,6 +24,7 @@
         </button>
         <button
           mat-button
+          (click)="onMakeAMemberNotEligible(memberInfo.member._id)"
           *ngIf="memberInfo.member.is_eligible && pollCount === 1"
           color="warn"
         >

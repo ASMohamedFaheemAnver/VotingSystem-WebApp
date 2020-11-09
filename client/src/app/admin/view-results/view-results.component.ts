@@ -54,4 +54,8 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
   onMakeEligible(_id: string) {
     this.adminService.makeAMemberEligible(_id);
   }
+
+  onMakeAMemberNotEligible(_id: string) {
+    this.adminService.makeAMemberNotEligible(_id);
+  }
 }
