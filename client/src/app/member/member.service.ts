@@ -15,6 +15,7 @@ export class MemberService {
   private backEndUrl = environment.backEndUrl;
   private client;
   private positionsListenner = new Subject<Position[]>();
+  private createVoteListenner = new Subject<boolean>();
   private membersByPositionListenner = new Subject<Member[]>();
   private memberVoteDataListenner = new Subject<MemberVoteData>();
   private positions: Position[] = [];
@@ -32,6 +33,10 @@ export class MemberService {
 
   getPositionsListener() {
     return this.positionsListenner;
+  }
+
+  getCreateVoteListenner() {
+    return this.createVoteListenner;
   }
 
   getMemberVoteDataListener() {
@@ -103,6 +108,7 @@ export class MemberService {
 
     this.client.mutate({ mutation: createVotes }).then((res) => {
       console.log(res);
+      this.createVoteListenner.next(true);
     });
   }
 

@@ -3,13 +3,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 50px;
 }
 
 .form-controll {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 50%;
+  width: 30%;
   margin: 20px 0;
 }
 
@@ -20,4 +21,45 @@
 
 .form-controll button {
   width: 300px;
+}
+
+.vote-recorded,
+.please-wait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+}
+
+.vote-recorded p {
+  color: green;
+  font-size: 22px;
+}
+
+.please-wait p {
+  color: red;
+  font-size: 22px;
+}
+
+@media (max-width: 1028px) {
+  .form-controll {
+    width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-controll {
+    width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .form-controll {
+    flex-direction: column;
+  }
+  .form-controll button {
+    width: 250px;
+  }
 }

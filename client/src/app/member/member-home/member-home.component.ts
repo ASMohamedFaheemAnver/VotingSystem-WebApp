@@ -17,6 +17,7 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
     private selectPersonDialog: MatDialog
   ) {}
   private positionsSub: Subscription;
+  private createVoteSub: Subscription;
   private memberVoteDataSub: Subscription;
   public positions: Position[] = [];
   public memberVoteData: MemberVoteData;
@@ -34,6 +35,11 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
         this.memberVoteData = memberVoteData;
       });
     this.memberService.getMemberVoteData();
+    this.createVoteSub = this.memberService
+      .getCreateVoteListenner()
+      .subscribe((isCreated) => {
+        this.memberVoteData.is_voted = isCreated;
+      });
   }
 
   ngOnDestroy(): void {

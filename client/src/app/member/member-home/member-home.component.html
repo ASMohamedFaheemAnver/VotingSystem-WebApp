@@ -4,7 +4,7 @@
     memberVoteData.current !== 'none' &&
     !memberVoteData.is_voted
   "
-  class="wrapper member-home"
+  class="member-home"
 >
   <div class="form-controll" *ngFor="let position of positions">
     <p>{{ position.title }}</p>
@@ -23,14 +23,14 @@
 </section>
 <div
   *ngIf="memberVoteData && memberVoteData.current === 'none'"
-  class="form-controll wrapper member-home"
+  class="please-wait"
 >
   <p>Please wait for the administrator to start the poll.</p>
 </div>
 
-<div
-  *ngIf="memberVoteData && memberVoteData.is_voted"
-  class="form-controll wrapper member-home"
->
+<div *ngIf="memberVoteData && memberVoteData.is_voted" class="vote-recorded">
   <p>Your vote was recorded.</p>
+  <p *ngIf="memberVoteData.current === 'first'">
+    Please wait for the administrator start the second poll.
+  </p>
 </div>
