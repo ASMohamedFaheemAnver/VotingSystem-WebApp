@@ -1,0 +1,44 @@
+[
+  {
+    "title": "President",
+    "eligible_year": 3,
+    "eligible_gender": "M",
+    "__typename": "Position"
+  },
+  {
+    "title": "Secretary",
+    "eligible_year": 3,
+    "eligible_gender": "F",
+    "__typename": "Position"
+  },
+  {
+    "title": "Vice president",
+    "eligible_year": 2,
+    "eligible_gender": "M",
+    "__typename": "Position"
+  },
+  {
+    "title": "Vice secretery",
+    "eligible_year": 2,
+    "eligible_gender": "F",
+    "__typename": "Position"
+  },
+  {
+    "title": "Junior treasurer",
+    "eligible_year": 2,
+    "eligible_gender": "M",
+    "__typename": "Position"
+  },
+  {
+    "title": "Private sector cordinator",
+    "eligible_year": 3,
+    "eligible_gender": "M",
+    "__typename": "Position"
+  },
+  {
+    "title": "Public sector cordinator",
+    "eligible_year": 3,
+    "eligible_gender": "M",
+    "__typename": "Position"
+  }
+]
