@@ -69,7 +69,7 @@ function _templateObject10() {
 }
 
 function _templateObject9() {
-  var data = _taggedTemplateLiteral(["\n      mutation {\n        makeAMemberNotEligible(_id: \"", "\") {\n          msg\n        }\n      }\n    "]);
+  var data = _taggedTemplateLiteral(["\n      mutation {\n        makeAMemberNotEligible(_id: \"", "\", position: \"", "\" ) {\n          msg\n        }\n      }\n    "]);
 
   _templateObject9 = function _templateObject9() {
     return data;
@@ -87,7 +87,7 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _templateObject8() {
-  var data = _taggedTemplateLiteral(["\n      mutation {\n        makeAMemberEligible(_id: \"", "\") {\n          msg\n        }\n      }\n    "]);
+  var data = _taggedTemplateLiteral(["\n      mutation {\n        makeAMemberEligible(_id: \"", "\", position: \"", "\") {\n          msg\n        }\n      }\n    "]);
 
   _templateObject8 = function _templateObject8() {
     return data;
@@ -97,7 +97,7 @@ function _templateObject8() {
 }
 
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n      query {\n        getSecondPollAllResult {\n          position {\n            title\n          }\n          eligible_member_infos {\n            member {\n              _id\n              name\n              year\n              is_eligible\n            }\n            vote_recieved\n          }\n        }\n      }\n    "]);
+  var data = _taggedTemplateLiteral(["\n      query {\n        getSecondPollAllResult {\n          position {\n            title\n          }\n          eligible_member_infos {\n            member {\n              _id\n              name\n              year\n              eligible_for {\n                _id\n              }\n            }\n            vote_recieved\n          }\n        }\n      }\n    "]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -107,7 +107,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n      query {\n        getFirstPollAllResult {\n          position {\n            title\n          }\n          eligible_member_infos {\n            member {\n              _id\n              name\n              year\n              is_eligible\n            }\n            vote_recieved\n          }\n        }\n      }\n    "]);
+  var data = _taggedTemplateLiteral(["\n      query {\n        getFirstPollAllResult {\n          position {\n            _id\n            title\n          }\n          eligible_member_infos {\n            member {\n              _id\n              name\n              year\n              eligible_for {\n                _id\n              }\n            }\n            vote_recieved\n          }\n        }\n      }\n    "]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -710,10 +710,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "makeAMemberEligible",
-        value: function makeAMemberEligible(_id) {
+        value: function makeAMemberEligible(_id, position) {
           var _this4 = this;
 
-          var makeAMemberEligible = apollo_boost__WEBPACK_IMPORTED_MODULE_1__["gql"](_templateObject8(), _id);
+          var makeAMemberEligible = apollo_boost__WEBPACK_IMPORTED_MODULE_1__["gql"](_templateObject8(), _id, position);
           this.client.mutate({
             mutation: makeAMemberEligible
           }).then(function (res) {
@@ -726,7 +726,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                   if (member_info.member._id === _id) {
                     return Object.assign(Object.assign({}, member_info), {
                       member: Object.assign(Object.assign({}, member_info.member), {
-                        is_eligible: true
+                        eligible_for: Object.assign(Object.assign({}, member_info.member.eligible_for), {
+                          _id: position
+                        })
                       })
                     });
                   }
@@ -744,10 +746,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "makeAMemberNotEligible",
-        value: function makeAMemberNotEligible(_id) {
+        value: function makeAMemberNotEligible(_id, position) {
           var _this5 = this;
 
-          var makeAMemberNotEligible = apollo_boost__WEBPACK_IMPORTED_MODULE_1__["gql"](_templateObject9(), _id);
+          var makeAMemberNotEligible = apollo_boost__WEBPACK_IMPORTED_MODULE_1__["gql"](_templateObject9(), _id, position);
           this.client.mutate({
             mutation: makeAMemberNotEligible
           }).then(function (res) {
@@ -760,7 +762,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                   if (member_info.member._id === _id) {
                     return Object.assign(Object.assign({}, member_info), {
                       member: Object.assign(Object.assign({}, member_info.member), {
-                        is_eligible: false
+                        eligible_for: null
                       })
                     });
                   }
@@ -1289,18 +1291,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     function ViewResultsComponent_div_1_div_12_button_7_Template(rf, ctx) {
       if (rf & 1) {
-        var _r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r26 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 10);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ViewResultsComponent_div_1_div_12_button_7_Template_button_click_0_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r25);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r26);
 
           var memberInfo_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
 
-          var ctx_r23 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          var pollResult_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
 
-          return ctx_r23.onMakeEligible(memberInfo_r20.member._id);
+          var ctx_r24 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r24.onMakeEligible(memberInfo_r20.member._id, pollResult_r17.position._id);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span");
@@ -1315,18 +1319,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     function ViewResultsComponent_div_1_div_12_button_8_Template(rf, ctx) {
       if (rf & 1) {
-        var _r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 11);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ViewResultsComponent_div_1_div_12_button_8_Template_button_click_0_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r28);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r30);
 
           var memberInfo_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
 
-          var ctx_r26 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          var pollResult_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
 
-          return ctx_r26.onMakeAMemberNotEligible(memberInfo_r20.member._id);
+          var ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+
+          return ctx_r28.onMakeAMemberNotEligible(memberInfo_r20.member._id, pollResult_r17.position._id);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span");
@@ -1336,6 +1342,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+      }
+    }
+
+    function ViewResultsComponent_div_1_div_12_button_9_Template(rf, ctx) {
+      if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 12);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Already eligible");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+      }
+
+      if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", true);
       }
     }
 
@@ -1365,13 +1389,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](8, ViewResultsComponent_div_1_div_12_button_8_Template, 3, 0, "button", 8);
 
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](9, ViewResultsComponent_div_1_div_12_button_9_Template, 3, 1, "button", 9);
+
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
       }
 
       if (rf & 2) {
         var memberInfo_r20 = ctx.$implicit;
 
-        var ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+        var pollResult_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit;
+
+        var ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
@@ -1387,11 +1415,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !memberInfo_r20.member.is_eligible && ctx_r19.pollCount === 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !memberInfo_r20.member.eligible_for && ctx_r19.pollCount === 1);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", memberInfo_r20.member.is_eligible && ctx_r19.pollCount === 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", memberInfo_r20.member.eligible_for && memberInfo_r20.member.eligible_for._id === pollResult_r17.position._id && ctx_r19.pollCount === 1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", memberInfo_r20.member.eligible_for && memberInfo_r20.member.eligible_for._id !== pollResult_r17.position._id && ctx_r19.pollCount === 1);
       }
     }
 
@@ -1431,7 +1463,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](12, ViewResultsComponent_div_1_div_12_Template, 9, 5, "div", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](12, ViewResultsComponent_div_1_div_12_Template, 10, 6, "div", 6);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -1503,13 +1535,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         }
       }, {
         key: "onMakeEligible",
-        value: function onMakeEligible(_id) {
-          this.adminService.makeAMemberEligible(_id);
+        value: function onMakeEligible(_id, position) {
+          console.log({
+            onMakeEligible: {
+              _id: _id,
+              position: position
+            }
+          });
+          this.adminService.makeAMemberEligible(_id, position);
         }
       }, {
         key: "onMakeAMemberNotEligible",
-        value: function onMakeAMemberNotEligible(_id) {
-          this.adminService.makeAMemberNotEligible(_id);
+        value: function onMakeAMemberNotEligible(_id, position) {
+          this.adminService.makeAMemberNotEligible(_id, position);
         }
       }]);
 
@@ -1525,7 +1563,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       selectors: [["app-view-results"]],
       decls: 2,
       vars: 1,
-      consts: [[1, "wrapper"], ["class", "inner-wrapper", 4, "ngFor", "ngForOf"], [1, "inner-wrapper"], [1, "member-info-wrapper"], [1, "member-info"], [4, "ngIf"], ["class", "member-info", 4, "ngFor", "ngForOf"], ["mat-button", "", 3, "click", 4, "ngIf"], ["mat-button", "", "color", "warn", 3, "click", 4, "ngIf"], ["mat-button", "", 3, "click"], ["mat-button", "", "color", "warn", 3, "click"]],
+      consts: [[1, "wrapper"], ["class", "inner-wrapper", 4, "ngFor", "ngForOf"], [1, "inner-wrapper"], [1, "member-info-wrapper"], [1, "member-info"], [4, "ngIf"], ["class", "member-info", 4, "ngFor", "ngForOf"], ["mat-button", "", 3, "click", 4, "ngIf"], ["mat-button", "", "color", "warn", 3, "click", 4, "ngIf"], ["mat-button", "", "color", "primary", 3, "disabled", 4, "ngIf"], ["mat-button", "", 3, "click"], ["mat-button", "", "color", "warn", 3, "click"], ["mat-button", "", "color", "primary", 3, "disabled"]],
       template: function ViewResultsComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 0);
@@ -2835,7 +2873,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       consts: [[1, "wrapper", "member-login"], ["appearance", "fill"], ["matInput", "", 3, "type"], ["secret", ""], ["mat-icon-button", "", "matSuffix", "", 3, "click"], ["mat-raised-button", "", "color", "primary", 3, "click"]],
       template: function MemberLoginComponent_Template(rf, ctx) {
         if (rf & 1) {
-          var _r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+          var _r34 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 0);
 
@@ -2868,11 +2906,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "button", 5);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MemberLoginComponent_Template_button_click_9_listener() {
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r30);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34);
 
-            var _r29 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5);
+            var _r33 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5);
 
-            return ctx.onMemberLogin(_r29.value);
+            return ctx.onMemberLogin(_r33.value);
           });
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10, " Verify ");
@@ -3207,7 +3245,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     function MemberHomeComponent_section_0_div_1_Template(rf, ctx) {
       if (rf & 1) {
-        var _r39 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r43 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 6);
 
@@ -3220,13 +3258,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "button", 7);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MemberHomeComponent_section_0_div_1_Template_button_click_3_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r39);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r43);
 
-          var position_r37 = ctx.$implicit;
+          var position_r41 = ctx.$implicit;
 
-          var ctx_r38 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
+          var ctx_r42 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2);
 
-          return ctx_r38.onSelectPerson(position_r37);
+          return ctx_r42.onSelectPerson(position_r41);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4);
@@ -3237,21 +3275,21 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }
 
       if (rf & 2) {
-        var position_r37 = ctx.$implicit;
+        var position_r41 = ctx.$implicit;
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](position_r37.title);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](position_r41.title);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", position_r37.to ? position_r37.to.name : "- Please select -", " ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", position_r41.to ? position_r41.to.name : "- Please select -", " ");
       }
     }
 
     function MemberHomeComponent_section_0_Template(rf, ctx) {
       if (rf & 1) {
-        var _r41 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r45 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 3);
 
@@ -3260,11 +3298,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 5);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MemberHomeComponent_section_0_Template_button_click_2_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r41);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r45);
 
-          var ctx_r40 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r44 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r40.onCreateVotes();
+          return ctx_r44.onCreateVotes();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, " Submit ");
@@ -3275,11 +3313,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }
 
       if (rf & 2) {
-        var ctx_r33 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r37 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r33.positions);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r37.positions);
       }
     }
 
@@ -3323,11 +3361,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }
 
       if (rf & 2) {
-        var ctx_r35 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+        var ctx_r39 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r35.memberVoteData.current === "first");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx_r39.memberVoteData.current === "first");
       }
     }
 
@@ -3704,13 +3742,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }
 
       if (rf & 2) {
-        var member_r32 = ctx.$implicit;
+        var member_r36 = ctx.$implicit;
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("mat-dialog-close", member_r32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("mat-dialog-close", member_r36);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](member_r32.name);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](member_r36.name);
       }
     }
 
@@ -3880,16 +3918,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     function TopNavComponent_button_3_Template(rf, ctx) {
       if (rf & 1) {
-        var _r45 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+        var _r49 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "button", 3);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function TopNavComponent_button_3_Template_button_click_0_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r45);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r49);
 
-          var ctx_r44 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+          var ctx_r48 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r44.onLogout();
+          return ctx_r48.onLogout();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Logout");
@@ -4044,8 +4082,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
     var environment = {
       production: false,
-      backEndUrl2: "http://localhost:4000/",
-      backEndUrl: "https://freedom-voting-system.herokuapp.com/"
+      backEndUrl: "http://localhost:4000/"
     };
     /*
      * For easier debugging in development mode, you can import the following file
