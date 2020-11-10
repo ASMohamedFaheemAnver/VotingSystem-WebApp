@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  backEndUrl2: "http://localhost:4000/",
-  backEndUrl: "https://freedom-voting-system.herokuapp.com/",
+  backEndUrl: "http://localhost:4000/",
+  // backEndUrl: "https://freedom-voting-system.herokuapp.com/",
 };
 
 /*

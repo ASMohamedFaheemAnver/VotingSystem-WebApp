@@ -51,11 +51,12 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onMakeEligible(_id: string) {
-    this.adminService.makeAMemberEligible(_id);
+  onMakeEligible(_id: string, position: string) {
+    console.log({ onMakeEligible: { _id: _id, position: position } });
+    this.adminService.makeAMemberEligible(_id, position);
   }
 
-  onMakeAMemberNotEligible(_id: string) {
-    this.adminService.makeAMemberNotEligible(_id);
+  onMakeAMemberNotEligible(_id: string, position: string) {
+    this.adminService.makeAMemberNotEligible(_id, position);
   }
 }
