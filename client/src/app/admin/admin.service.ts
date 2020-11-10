@@ -178,6 +178,7 @@ export class AdminService {
       query {
         getFirstPollAllResult {
           position {
+            _id
             title
           }
           eligible_member_infos {
@@ -185,7 +186,9 @@ export class AdminService {
               _id
               name
               year
-              is_eligible
+              eligible_for {
+                _id
+              }
             }
             vote_recieved
           }
@@ -204,7 +207,9 @@ export class AdminService {
               _id
               name
               year
-              is_eligible
+              eligible_for {
+                _id
+              }
             }
             vote_recieved
           }
@@ -226,10 +231,10 @@ export class AdminService {
       });
   }
 
-  makeAMemberEligible(_id: string) {
+  makeAMemberEligible(_id: string, position: string) {
     const makeAMemberEligible = gql`
       mutation {
-        makeAMemberEligible(_id: "${_id}") {
+        makeAMemberEligible(_id: "${_id}", position: "${position}") {
           msg
         }
       }
@@ -246,7 +251,13 @@ export class AdminService {
               if (member_info.member._id === _id) {
                 return {
                   ...member_info,
-                  member: { ...member_info.member, is_eligible: true },
+                  member: {
+                    ...member_info.member,
+                    eligible_for: {
+                      ...member_info.member.eligible_for,
+                      _id: position,
+                    },
+                  },
                 };
               }
               return member_info;
@@ -260,10 +271,10 @@ export class AdminService {
     });
   }
 
-  makeAMemberNotEligible(_id: string) {
+  makeAMemberNotEligible(_id: string, position: string) {
     const makeAMemberNotEligible = gql`
       mutation {
-        makeAMemberNotEligible(_id: "${_id}") {
+        makeAMemberNotEligible(_id: "${_id}", position: "${position}" ) {
           msg
         }
       }
@@ -273,6 +284,7 @@ export class AdminService {
       console.log({
         makeAMemberNotEligible: res["data"].makeAMemberNotEligible,
       });
+
       this.pollResults = this.pollResults.map((pollResult) => {
         return {
           ...pollResult,
@@ -281,7 +293,10 @@ export class AdminService {
               if (member_info.member._id === _id) {
                 return {
                   ...member_info,
-                  member: { ...member_info.member, is_eligible: false },
+                  member: {
+                    ...member_info.member,
+                    eligible_for: null,
+                  },
                 };
               }
               return member_info;
