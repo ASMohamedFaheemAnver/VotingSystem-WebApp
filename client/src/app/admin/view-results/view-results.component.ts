@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { PollResult } from "src/app/model/poll-result.model";
+import { Position } from "src/app/model/position.model";
 import { AdminService } from "../admin.service";
 
 @Component({
@@ -51,12 +52,21 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onMakeEligible(_id: string, position: string) {
+  onMakeEligible(_id: string, position: Position) {
     console.log({ onMakeEligible: { _id: _id, position: position } });
     this.adminService.makeAMemberEligible(_id, position);
   }
 
-  onMakeAMemberNotEligible(_id: string, position: string) {
+  onMakeAMemberNotEligible(_id: string, position: Position) {
+    console.log({
+      onMakeAMemberNotEligible: { _id: _id, position: position },
+    });
     this.adminService.makeAMemberNotEligible(_id, position);
+  }
+
+  IsIndexExist(eligible_for: Position[], position: string) {
+    return eligible_for.some((pPosition) => {
+      return pPosition._id === position;
+    });
   }
 }

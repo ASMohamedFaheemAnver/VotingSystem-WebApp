@@ -15,44 +15,37 @@
         <p>{{ memberInfo.member.name }}</p>
         <p>{{ memberInfo.member.year }}</p>
         <p>{{ memberInfo.vote_recieved }}</p>
+
         <button
           mat-button
-          *ngIf="!memberInfo.member.eligible_for && pollCount === 1"
-          (click)="
-            onMakeEligible(memberInfo.member._id, pollResult.position._id)
+          *ngIf="
+            memberInfo.member.eligible_for.length >= 0 &&
+            !IsIndexExist(
+              memberInfo.member.eligible_for,
+              pollResult.position._id
+            ) &&
+            pollCount === 1
           "
+          (click)="onMakeEligible(memberInfo.member._id, pollResult.position)"
         >
           <span>Make eligible</span>
         </button>
         <button
           mat-button
           (click)="
-            onMakeAMemberNotEligible(
-              memberInfo.member._id,
-              pollResult.position._id
-            )
+            onMakeAMemberNotEligible(memberInfo.member._id, pollResult.position)
           "
           *ngIf="
-            memberInfo.member.eligible_for &&
-            memberInfo.member.eligible_for._id === pollResult.position._id &&
+            memberInfo.member.eligible_for.length > 0 &&
+            IsIndexExist(
+              memberInfo.member.eligible_for,
+              pollResult.position._id
+            ) &&
             pollCount === 1
           "
           color="warn"
         >
           <span>Remove from eligible</span>
-        </button>
-
-        <button
-          mat-button
-          [disabled]="true"
-          color="primary"
-          *ngIf="
-            memberInfo.member.eligible_for &&
-            memberInfo.member.eligible_for._id !== pollResult.position._id &&
-            pollCount === 1
-          "
-        >
-          <span>Already eligible</span>
         </button>
       </div>
     </div>

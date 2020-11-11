@@ -7,6 +7,7 @@ import { AuthService } from "../auth/auth.service";
 import { Member } from "../model/member.model";
 import { PollData } from "../model/poll-data.model";
 import { PollResult } from "../model/poll-result.model";
+import { Position } from "../model/position.model";
 
 @Injectable({
   providedIn: "root",
@@ -231,10 +232,10 @@ export class AdminService {
       });
   }
 
-  makeAMemberEligible(_id: string, position: string) {
+  makeAMemberEligible(_id: string, position: Position) {
     const makeAMemberEligible = gql`
       mutation {
-        makeAMemberEligible(_id: "${_id}", position: "${position}") {
+        makeAMemberEligible(_id: "${_id}", position: "${position._id}") {
           msg
         }
       }
@@ -253,10 +254,10 @@ export class AdminService {
                   ...member_info,
                   member: {
                     ...member_info.member,
-                    eligible_for: {
+                    eligible_for: [
                       ...member_info.member.eligible_for,
-                      _id: position,
-                    },
+                      position,
+                    ],
                   },
                 };
               }
@@ -271,10 +272,10 @@ export class AdminService {
     });
   }
 
-  makeAMemberNotEligible(_id: string, position: string) {
+  makeAMemberNotEligible(_id: string, position: Position) {
     const makeAMemberNotEligible = gql`
       mutation {
-        makeAMemberNotEligible(_id: "${_id}", position: "${position}" ) {
+        makeAMemberNotEligible(_id: "${_id}", position: "${position._id}" ) {
           msg
         }
       }
@@ -295,7 +296,11 @@ export class AdminService {
                   ...member_info,
                   member: {
                     ...member_info.member,
-                    eligible_for: null,
+                    eligible_for: [
+                      ...member_info.member.eligible_for.filter(
+                        (pPosition) => pPosition._id !== position._id
+                      ),
+                    ],
                   },
                 };
               }
