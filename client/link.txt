@@ -1,0 +1,9 @@
+#Golobal erorr handling
+https://www.apollographql.com/docs/link/links/error/
+https://stackoverflow.com/questions/49420667/angular-apollo-error-handling
+
+
+
+#Extra
+https://stackoverflow.com/questions/39767019/app-initializer-raises-cannot-instantiate-cyclic-dependency-applicationref-w
+https://github.com/robisim74/angular-l10n/issues/176

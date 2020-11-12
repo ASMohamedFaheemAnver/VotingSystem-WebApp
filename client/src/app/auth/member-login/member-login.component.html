@@ -1,23 +1,34 @@
 <section class="wrapper member-login">
-  <h1>Enter your secret</h1>
-  <mat-form-field appearance="fill">
-    <input #secret matInput [type]="hide ? 'password' : 'text'" />
+  <div class="info">
+    <div class="logo"></div>
+    <h1>Annual General Meeting - 2020</h1>
+    <h1>Association of Islamic Students</h1>
+    <h1>University of Kelaniya</h1>
+  </div>
+  <div class="secret">
+    <h1>Enter your secret</h1>
+    <mat-form-field appearance="fill">
+      <input #secret matInput [type]="hide ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'hide'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
     <button
-      mat-icon-button
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'hide'"
-      [attr.aria-pressed]="hide"
+      [disabled]="secret.value.length !== 10"
+      (click)="onMemberLogin(secret.value)"
+      mat-raised-button
+      color="primary"
     >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      Verify
     </button>
-  </mat-form-field>
-  <button
-    [disabled]="secret.value.length !== 10"
-    (click)="onMemberLogin(secret.value)"
-    mat-raised-button
-    color="primary"
-  >
-    Verify
-  </button>
+  </div>
 </section>
+<div *ngIf="isLoading" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>

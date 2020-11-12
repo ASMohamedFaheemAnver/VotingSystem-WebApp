@@ -5,6 +5,7 @@ import { Position } from "../../model/position.model";
 import { MatDialog } from "@angular/material/dialog";
 import { SelectPersonDialogComponent } from "../select-person-dialog/select-person-dialog.component";
 import { MemberVoteData } from "src/app/model/member-vote-data.model";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-member-home",
@@ -21,29 +22,39 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
   private memberVoteDataSub: Subscription;
   public positions: Position[] = [];
   public memberVoteData: MemberVoteData;
+  public isLoading = false;
 
   ngOnInit(): void {
-    this.memberService.getAllPositions();
+    this.isLoading = true;
     this.positionsSub = this.memberService
       .getPositionsListener()
       .subscribe((positions) => {
+        this.isLoading = false;
         this.positions = positions;
       });
     this.memberVoteDataSub = this.memberService
       .getMemberVoteDataListener()
       .subscribe((memberVoteData) => {
+        this.isLoading = false;
         this.memberVoteData = memberVoteData;
+        if (!this.memberVoteData.is_voted) {
+          this.isLoading = true;
+          this.memberService.getAllPositions();
+        }
       });
     this.memberService.getMemberVoteData();
     this.createVoteSub = this.memberService
       .getCreateVoteListenner()
       .subscribe((isCreated) => {
+        this.isLoading = false;
         this.memberVoteData.is_voted = isCreated;
       });
   }
 
   ngOnDestroy(): void {
     this.positionsSub.unsubscribe();
+    this.createVoteSub.unsubscribe();
+    this.memberVoteDataSub.unsubscribe();
   }
 
   onSelectPerson(position: Position) {
@@ -65,6 +76,7 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
   }
 
   onCreateVotes() {
+    this.isLoading = true;
     this.memberService.createVotes(this.positions);
   }
 }

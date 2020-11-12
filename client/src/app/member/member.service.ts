@@ -104,10 +104,15 @@ export class MemberService {
       }
     `;
 
-    this.apollo.mutate({ mutation: createVotes }).subscribe((res) => {
-      console.log(res);
-      this.createVoteListenner.next(true);
-    });
+    this.apollo.mutate({ mutation: createVotes }).subscribe(
+      (res) => {
+        console.log(res);
+        this.createVoteListenner.next(true);
+      },
+      (err) => {
+        this.createVoteListenner.next(false);
+      }
+    );
   }
 
   getAllMembersByPosition(position: string) {

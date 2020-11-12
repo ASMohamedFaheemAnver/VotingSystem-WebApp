@@ -13,6 +13,7 @@
     </button>
   </div>
   <button
+    *ngIf="positions.length > 0"
     (click)="onCreateVotes()"
     class="submit"
     mat-raised-button
@@ -33,4 +34,8 @@
   <p *ngIf="memberVoteData.current === 'first'">
     Please wait for the administrator start the second poll.
   </p>
+</div>
+
+<div *ngIf="isLoading" class="spinner">
+  <mat-spinner></mat-spinner>
 </div>

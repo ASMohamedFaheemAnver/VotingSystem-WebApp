@@ -63,7 +63,8 @@ export class AuthService {
         this.router.navigateByUrl("admin/admin-home");
       },
       (err) => {
-        console.log(err.message);
+        this.authStatusListenner.next(false);
+        console.log(err);
       }
     );
   }
@@ -97,7 +98,8 @@ export class AuthService {
         this.router.navigateByUrl("member/member-home");
       },
       (err) => {
-        console.log(err.message);
+        this.authStatusListenner.next(false);
+        console.log(err);
       }
     );
   }
