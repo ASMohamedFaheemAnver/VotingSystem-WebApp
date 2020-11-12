@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import ApolloBoost, { gql } from "apollo-boost";
+import { Apollo, gql } from "apollo-angular";
 import { Subject } from "rxjs";
-import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
 import { MemberVoteData } from "../model/member-vote-data.model";
 import { Member } from "../model/member.model";
@@ -12,8 +11,6 @@ import { Position } from "../model/position.model";
   providedIn: "root",
 })
 export class MemberService {
-  private backEndUrl = environment.backEndUrl;
-  private client;
   private positionsListenner = new Subject<Position[]>();
   private createVoteListenner = new Subject<boolean>();
   private membersByPositionListenner = new Subject<Member[]>();
@@ -22,14 +19,11 @@ export class MemberService {
   private membersByPosition: Member[] = [];
   private memberVoteData: MemberVoteData;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.client = new ApolloBoost({
-      uri: this.backEndUrl,
-      headers: {
-        Authorization: this.authService.getToken(),
-      },
-    });
-  }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private apollo: Apollo
+  ) {}
 
   getPositionsListener() {
     return this.positionsListenner;
@@ -59,8 +53,8 @@ export class MemberService {
       }
     `;
 
-    this.client.query({ query: getAllPositions }).then((res) => {
-      this.positions = res.data.getAllPositions;
+    this.apollo.query({ query: getAllPositions }).subscribe((res) => {
+      this.positions = res.data["getAllPositions"];
       console.log({ getAllPositions: this.positions });
       this.positionsListenner.next([...this.positions]);
     });
@@ -106,7 +100,7 @@ export class MemberService {
       }
     `;
 
-    this.client.mutate({ mutation: createVotes }).then((res) => {
+    this.apollo.mutate({ mutation: createVotes }).subscribe((res) => {
       console.log(res);
       this.createVoteListenner.next(true);
     });
@@ -125,8 +119,8 @@ export class MemberService {
       }
     `;
 
-    this.client.query({ query: getAllMembersByPosition }).then((res) => {
-      this.membersByPosition = res.data.getAllMembersByPosition;
+    this.apollo.query({ query: getAllMembersByPosition }).subscribe((res) => {
+      this.membersByPosition = res.data["getAllMembersByPosition"];
       console.log({ getAllMembersByPosition: this.membersByPosition });
       this.membersByPositionListenner.next([...this.membersByPosition]);
     });
@@ -142,11 +136,11 @@ export class MemberService {
       }
     `;
 
-    this.client
+    this.apollo
       .query({ query: getMemberVoteData, fetchPolicy: "no-cache" })
-      .then((res) => {
-        console.log({ getMemberVoteData: res.data.getMemberVoteData });
-        this.memberVoteData = res.data.getMemberVoteData;
+      .subscribe((res) => {
+        this.memberVoteData = res.data["getMemberVoteData"];
+        console.log({ getMemberVoteData: this.memberVoteData });
         this.memberVoteDataListenner.next(this.memberVoteData);
       });
   }

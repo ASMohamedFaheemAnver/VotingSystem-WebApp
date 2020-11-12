@@ -1,32 +1,28 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import ApolloBoost, { gql } from "apollo-boost";
+import { Apollo, gql } from "apollo-angular";
 import { Subject } from "rxjs";
-import { environment } from "src/environments/environment";
 import { DeveloperLoginInput } from "../model/developer-login-input.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  public client;
   private userId: string;
   private token: string;
   private isUserLoggedIn: boolean;
   private tokenTimer: NodeJS.Timer;
   private userCategory: string;
 
-  private backEndUrl = environment.backEndUrl;
-
   private authStatusListenner = new Subject<boolean>();
   private userCategoryListenner = new Subject<string>();
 
-  constructor(private router: Router, private http: HttpClient) {
-    this.client = new ApolloBoost({
-      uri: this.backEndUrl,
-    });
-  }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private apollo: Apollo
+  ) {}
 
   getAuthStatusListener() {
     return this.authStatusListenner;
@@ -49,31 +45,12 @@ export class AuthService {
       }
     `;
 
-    // const loginDeveloper = `
-    //   query {
-    //     loginDeveloper(
-    //       data: { email: "${developerLoginInput.email}", password: "${developerLoginInput.password}" }
-    //     ) {
-    //       _id
-    //       token
-    //       expiresIn
-    //     }
-    //   }
-    // `;
-
-    /*this.http
-      .post(this.backEndUrl, { query: loginDeveloper })
-      .subscribe((res) => {
+    this.apollo.query({ query: loginDeveloper }).subscribe(
+      (res) => {
         console.log(res);
-      });*/
-
-    this.client
-      .query({ query: loginDeveloper })
-      .then((res) => {
-        console.log(res);
-        const expiresIn = res["data"].loginDeveloper.expiresIn;
-        const userId = res["data"].loginDeveloper._id;
-        const token = res["data"].loginDeveloper.token;
+        const expiresIn = res["data"]["loginDeveloper"].expiresIn;
+        const userId = res["data"]["loginDeveloper"]._id;
+        const token = res["data"]["loginDeveloper"].token;
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
         this.userCategory = "developer";
@@ -84,10 +61,11 @@ export class AuthService {
         this.userCategoryListenner.next(this.userCategory);
         this.authStatusListenner.next(true);
         this.router.navigateByUrl("admin/admin-home");
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err.message);
-      });
+      }
+    );
   }
 
   public loginMember(secret: string) {
@@ -101,13 +79,12 @@ export class AuthService {
         }
     `;
 
-    this.client
-      .query({ query: loginMember })
-      .then((res) => {
+    this.apollo.query({ query: loginMember }).subscribe(
+      (res) => {
         console.log(res);
-        const expiresIn = res["data"].loginMember.expiresIn;
-        const userId = res["data"].loginMember._id;
-        const token = res["data"].loginMember.token;
+        const expiresIn = res["data"]["loginMember"].expiresIn;
+        const userId = res["data"]["loginMember"]._id;
+        const token = res["data"]["loginMember"].token;
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresIn * 1000);
         this.userCategory = "member";
@@ -118,10 +95,11 @@ export class AuthService {
         this.userCategoryListenner.next(this.userCategory);
         this.authStatusListenner.next(true);
         this.router.navigateByUrl("member/member-home");
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err.message);
-      });
+      }
+    );
   }
 
   private saveAuthData(
