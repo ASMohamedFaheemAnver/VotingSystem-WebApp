@@ -11,6 +11,7 @@ import { MemberService } from "../member.service";
 export class SelectPersonDialogComponent implements OnInit, OnDestroy {
   public membersByPosition: Member[] = [];
   private membersByPositionSub: Subscription;
+  public isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Position,
@@ -20,11 +21,13 @@ export class SelectPersonDialogComponent implements OnInit, OnDestroy {
     this.membersByPositionSub.unsubscribe();
   }
   ngOnInit(): void {
+    this.isLoading = true;
     console.log({ selectPersonDialogComponentData: this.data });
     this.memberService.getAllMembersByPosition(this.data["_id"]);
     this.membersByPositionSub = this.memberService
       .getMembersByPositionListener()
       .subscribe((membersByPosition) => {
+        this.isLoading = false;
         this.membersByPosition = membersByPosition;
         console.log({
           selectPersonDialogComponentMembersByPosition: this.membersByPosition,
