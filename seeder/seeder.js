@@ -3,8 +3,8 @@ import ApolloClient, { gql } from "apollo-boost";
 const fs = require("fs");
 
 const client = new ApolloClient({
-  // uri: "https://freedom-voting-system.herokuapp.com/",
-  uri: "http://localhost:4000/",
+  uri: "https://freedom-voting-system.herokuapp.com/",
+  // uri: "http://localhost:4000/",
   headers: {
     Authorization: process.env.Authorization,
   },
@@ -115,5 +115,5 @@ function seedPositions() {
   })
 }
 
-seedMembers();
+// seedMembers();
 seedPositions();
