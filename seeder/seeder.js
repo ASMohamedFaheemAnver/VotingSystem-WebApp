@@ -3,8 +3,8 @@ import ApolloClient, { gql } from "apollo-boost";
 const fs = require("fs");
 
 const client = new ApolloClient({
-  uri: "https://freedom-voting-system.herokuapp.com/",
-  // uri: "http://localhost:4000/",
+  // uri: "https://freedom-voting-system.herokuapp.com/",
+  uri: "http://localhost:4000/",
   headers: {
     Authorization: process.env.Authorization,
   },
@@ -22,7 +22,7 @@ function seedMembers() {
     for (let i = 0; i < members.length; i++) {
       const createMember = gql`
       mutation {
-        createMember(data: { name: "${members[i].name}", year: ${members[i].year}, gender: "${members[i].gender}" }) {
+        createMember(data: { secret: "${members[i].secret}", name: "${members[i].name}", year: ${members[i].year}, gender: "${members[i].gender}" }) {
           _id
         }
       }
@@ -114,3 +114,6 @@ function seedPositions() {
     }
   })
 }
+
+seedMembers();
+// seedPositions()

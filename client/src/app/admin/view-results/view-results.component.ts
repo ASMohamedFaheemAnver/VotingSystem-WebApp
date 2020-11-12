@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { PollResult } from "src/app/model/poll-result.model";
+import { Position } from "src/app/model/position.model";
 import { AdminService } from "../admin.service";
 
 @Component({
@@ -27,16 +28,17 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
     this.pollResultsSub = this.adminService
       .getpollResultsListenner()
       .subscribe((pollResults) => {
+        console.log({ viewResultsComponent: pollResults });
         pollResults = pollResults.map((pollResult) => {
           return {
             ...pollResult,
-            eligible_member_infos: pollResult.eligible_member_infos.sort(
-              function (x, y) {
+            eligible_member_infos: pollResult.eligible_member_infos
+              .slice()
+              .sort(function (x, y) {
                 if (x.vote_recieved > y.vote_recieved) return -1;
                 if (x.vote_recieved < y.vote_recieved) return 1;
                 return 0;
-              }
-            ),
+              }),
           };
         });
         this.pollResults = pollResults;
@@ -51,12 +53,21 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onMakeEligible(_id: string, position: string) {
+  onMakeEligible(_id: string, position: Position) {
     console.log({ onMakeEligible: { _id: _id, position: position } });
     this.adminService.makeAMemberEligible(_id, position);
   }
 
-  onMakeAMemberNotEligible(_id: string, position: string) {
+  onMakeAMemberNotEligible(_id: string, position: Position) {
+    console.log({
+      onMakeAMemberNotEligible: { _id: _id, position: position },
+    });
     this.adminService.makeAMemberNotEligible(_id, position);
+  }
+
+  IsIndexExist(eligible_for: Position[], position: string) {
+    return eligible_for.some((pPosition) => {
+      return pPosition._id === position;
+    });
   }
 }

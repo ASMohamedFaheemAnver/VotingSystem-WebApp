@@ -17,7 +17,8 @@ import { AdminHomeComponent } from "./admin/admin-home/admin-home.component";
 import { MemberHomeComponent } from "./member/member-home/member-home.component";
 import { ViewMembersComponent } from "./admin/view-members/view-members.component";
 import { SelectPersonDialogComponent } from "./member/select-person-dialog/select-person-dialog.component";
-import { ViewResultsComponent } from './admin/view-results/view-results.component';
+import { ViewResultsComponent } from "./admin/view-results/view-results.component";
+import { GraphQLModule } from "./graphql.module";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ViewResultsComponent } from './admin/view-results/view-results.componen
     ReactiveFormsModule,
     FormsModule,
     MatNativeDateModule,
+    GraphQLModule,
   ],
   providers: [
     {

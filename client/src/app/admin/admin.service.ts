@@ -1,19 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import ApolloBoost, { gql } from "apollo-boost";
+import { Apollo, gql } from "apollo-angular";
 import { Subject } from "rxjs";
-import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
 import { Member } from "../model/member.model";
 import { PollData } from "../model/poll-data.model";
 import { PollResult } from "../model/poll-result.model";
+import { Position } from "../model/position.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminService {
-  private client;
-  private backEndUrl = environment.backEndUrl;
   private members: Member[];
   private pollResults: PollResult[];
   private secondYearMembers: Member[] = [];
@@ -29,14 +27,11 @@ export class AdminService {
 
   private pollResultsListenner = new Subject<PollResult[]>();
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.client = new ApolloBoost({
-      uri: this.backEndUrl,
-      headers: {
-        Authorization: this.authService.getToken(),
-      },
-    });
-  }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private apollo: Apollo
+  ) {}
 
   getMembersListener() {
     return this.membersListenner;
@@ -64,14 +59,13 @@ export class AdminService {
       }
     `;
 
-    this.client
-      .query({ query: getAllMembers })
-      .then((res) => {
+    this.apollo.query({ query: getAllMembers }).subscribe(
+      (res) => {
         this.fourthYearMembers = [];
         this.thirdYearMembers = [];
         this.secondYearMembers = [];
-        console.log({ getAllMembers: res["data"].getAllMembers });
-        this.members = res["data"].getAllMembers;
+        console.log({ getAllMembers: res["data"]["getAllMembers"] });
+        this.members = res["data"]["getAllMembers"];
         this.members.forEach((member) => {
           if (member.year === 4) {
             this.fourthYearMembers.push(member);
@@ -87,10 +81,11 @@ export class AdminService {
           third: this.thirdYearMembers,
           fourth: this.fourthYearMembers,
         });
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 
   enableFirstPoll(pollData: PollData) {
@@ -102,15 +97,15 @@ export class AdminService {
       }
     `;
 
-    this.client
-      .mutate({ mutation: enableFirstPoll })
-      .then((res) => {
+    this.apollo.mutate({ mutation: enableFirstPoll }).subscribe(
+      (res) => {
         console.log(res);
         pollData.is_first_poll_enabled = true;
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 
   disableFirstPoll(pollData: PollData) {
@@ -122,15 +117,15 @@ export class AdminService {
       }
     `;
 
-    this.client
-      .mutate({ mutation: disableFirstPoll })
-      .then((res) => {
+    this.apollo.mutate({ mutation: disableFirstPoll }).subscribe(
+      (res) => {
         console.log(res);
         pollData.is_first_poll_enabled = false;
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 
   enableSecondPoll(pollData: PollData) {
@@ -142,15 +137,15 @@ export class AdminService {
       }
     `;
 
-    this.client
-      .mutate({ mutation: enableSecondPoll })
-      .then((res) => {
+    this.apollo.mutate({ mutation: enableSecondPoll }).subscribe(
+      (res) => {
         console.log(res);
         pollData.is_second_poll_enabled = true;
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 
   disableSecondPoll(pollData: PollData) {
@@ -162,15 +157,15 @@ export class AdminService {
       }
     `;
 
-    this.client
-      .mutate({ mutation: disableSecondPoll })
-      .then((res) => {
+    this.apollo.mutate({ mutation: disableSecondPoll }).subscribe(
+      (res) => {
         console.log(res);
         pollData.is_second_poll_enabled = false;
-      })
-      .catch((err) => {
+      },
+      (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 
   getFirstPollResult(pollCount: number) {
@@ -217,31 +212,31 @@ export class AdminService {
       }
     `;
 
-    this.client
+    this.apollo
       .query({
         query: pollCount == 1 ? getFirstPollAllResult : getSecondPollAllResult,
       })
-      .then((res) => {
+      .subscribe((res) => {
         this.pollResults =
           pollCount == 1
-            ? res["data"].getFirstPollAllResult
-            : res["data"].getSecondPollAllResult;
+            ? res["data"]["getFirstPollAllResult"]
+            : res["data"]["getSecondPollAllResult"];
         console.log({ getAllPollResult: this.pollResults });
-        this.pollResultsListenner.next(this.pollResults);
+        this.pollResultsListenner.next([...this.pollResults]);
       });
   }
 
-  makeAMemberEligible(_id: string, position: string) {
+  makeAMemberEligible(_id: string, position: Position) {
     const makeAMemberEligible = gql`
       mutation {
-        makeAMemberEligible(_id: "${_id}", position: "${position}") {
+        makeAMemberEligible(_id: "${_id}", position: "${position._id}") {
           msg
         }
       }
     `;
 
-    this.client.mutate({ mutation: makeAMemberEligible }).then((res) => {
-      console.log({ makeAMemberEligible: res["data"].makeAMemberEligible });
+    this.apollo.mutate({ mutation: makeAMemberEligible }).subscribe((res) => {
+      console.log({ makeAMemberEligible: res["data"]["makeAMemberEligible"] });
 
       this.pollResults = this.pollResults.map((pollResult) => {
         return {
@@ -253,10 +248,10 @@ export class AdminService {
                   ...member_info,
                   member: {
                     ...member_info.member,
-                    eligible_for: {
+                    eligible_for: [
                       ...member_info.member.eligible_for,
-                      _id: position,
-                    },
+                      position,
+                    ],
                   },
                 };
               }
@@ -271,43 +266,49 @@ export class AdminService {
     });
   }
 
-  makeAMemberNotEligible(_id: string, position: string) {
+  makeAMemberNotEligible(_id: string, position: Position) {
     const makeAMemberNotEligible = gql`
       mutation {
-        makeAMemberNotEligible(_id: "${_id}", position: "${position}" ) {
+        makeAMemberNotEligible(_id: "${_id}", position: "${position._id}" ) {
           msg
         }
       }
     `;
 
-    this.client.mutate({ mutation: makeAMemberNotEligible }).then((res) => {
-      console.log({
-        makeAMemberNotEligible: res["data"].makeAMemberNotEligible,
-      });
+    this.apollo
+      .mutate({ mutation: makeAMemberNotEligible })
+      .subscribe((res) => {
+        console.log({
+          makeAMemberNotEligible: res["data"]["makeAMemberNotEligible"],
+        });
 
-      this.pollResults = this.pollResults.map((pollResult) => {
-        return {
-          ...pollResult,
-          eligible_member_infos: pollResult.eligible_member_infos.map(
-            (member_info) => {
-              if (member_info.member._id === _id) {
-                return {
-                  ...member_info,
-                  member: {
-                    ...member_info.member,
-                    eligible_for: null,
-                  },
-                };
+        this.pollResults = this.pollResults.map((pollResult) => {
+          return {
+            ...pollResult,
+            eligible_member_infos: pollResult.eligible_member_infos.map(
+              (member_info) => {
+                if (member_info.member._id === _id) {
+                  return {
+                    ...member_info,
+                    member: {
+                      ...member_info.member,
+                      eligible_for: [
+                        ...member_info.member.eligible_for.filter(
+                          (pPosition) => pPosition._id !== position._id
+                        ),
+                      ],
+                    },
+                  };
+                }
+                return member_info;
               }
-              return member_info;
-            }
-          ),
-        };
-      });
+            ),
+          };
+        });
 
-      console.log({ getAllPollResult: this.pollResults });
-      this.pollResultsListenner.next([...this.pollResults]);
-    });
+        console.log({ getAllPollResult: this.pollResults });
+        this.pollResultsListenner.next([...this.pollResults]);
+      });
   }
 
   getPollData() {
@@ -320,10 +321,10 @@ export class AdminService {
       }
     `;
 
-    this.client.query({ query: getPollData }).then((res) => {
-      console.log({ getPollData: res["data"].getPollData });
-      this.pollData = res["data"].getPollData;
-      this.pollDataListenner.next(this.pollData);
+    this.apollo.query({ query: getPollData }).subscribe((res) => {
+      console.log({ getPollData: res["data"]["getPollData"] });
+      this.pollData = res["data"]["getPollData"];
+      this.pollDataListenner.next({ ...this.pollData });
     });
   }
 }

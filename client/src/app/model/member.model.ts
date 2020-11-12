@@ -6,5 +6,5 @@ export interface Member {
   year: number;
   gender: string;
   name: string;
-  eligible_for: Position;
+  eligible_for: Position[];
 }

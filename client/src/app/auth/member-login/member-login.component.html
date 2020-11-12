@@ -13,6 +13,7 @@
     </button>
   </mat-form-field>
   <button
+    [disabled]="secret.value.length !== 10"
     (click)="onMemberLogin(secret.value)"
     mat-raised-button
     color="primary"
