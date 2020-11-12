@@ -93,6 +93,10 @@ export class MemberService {
               position: "${positions[6]._id}"
               to: "${positions[6].to._id}"
             }
+            {
+              position: "${positions[7]._id}"
+              to: "${positions[7].to._id}"
+            }
           ]
         ) {
           _id
@@ -119,11 +123,13 @@ export class MemberService {
       }
     `;
 
-    this.apollo.query({ query: getAllMembersByPosition }).subscribe((res) => {
-      this.membersByPosition = res.data["getAllMembersByPosition"];
-      console.log({ getAllMembersByPosition: this.membersByPosition });
-      this.membersByPositionListenner.next([...this.membersByPosition]);
-    });
+    this.apollo
+      .query({ query: getAllMembersByPosition, fetchPolicy: "network-only" })
+      .subscribe((res) => {
+        this.membersByPosition = res.data["getAllMembersByPosition"];
+        console.log({ getAllMembersByPosition: this.membersByPosition });
+        this.membersByPositionListenner.next([...this.membersByPosition]);
+      });
   }
 
   getMemberVoteData() {

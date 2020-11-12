@@ -40,5 +40,11 @@
     "eligible_year": 3,
     "eligible_gender": "M",
     "__typename": "Position"
+  },
+  {
+    "title": "Editor",
+    "eligible_year": 3,
+    "eligible_gender": "M",
+    "__typename": "Position"
   }
 ]

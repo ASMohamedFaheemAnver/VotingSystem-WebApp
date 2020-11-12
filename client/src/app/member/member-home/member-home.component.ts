@@ -54,7 +54,13 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
 
     selectPersonDialogRef.afterClosed().subscribe((member) => {
       console.log({ memberHomeSelectedMember: member, position: position });
-      position.to = member;
+      // position = { ...position, to: member };
+      this.positions = this.positions.map((pPosition) => {
+        if (pPosition === position) {
+          return { ...position, to: member };
+        }
+        return pPosition;
+      });
     });
   }
 

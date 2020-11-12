@@ -215,6 +215,7 @@ export class AdminService {
     this.apollo
       .query({
         query: pollCount == 1 ? getFirstPollAllResult : getSecondPollAllResult,
+        fetchPolicy: "network-only",
       })
       .subscribe((res) => {
         this.pollResults =
