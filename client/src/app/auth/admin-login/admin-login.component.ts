@@ -14,6 +14,8 @@ export class AdminLoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
   private isAuth = false;
   private userCategory;
+  public isLoading = false;
+  private authStatusListennerSub: Subscription;
 
   ngOnInit(): void {
     this.isAuth = this.authService.isUserAuth();
@@ -31,10 +33,17 @@ export class AdminLoginComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(8)],
       }),
     });
+
+    this.authStatusListennerSub = this.authService
+      .getAuthStatusListener()
+      .subscribe((isAuth) => {
+        this.isLoading = isAuth;
+      });
   }
 
   onLoginDeveloper() {
     console.log({ adminLoginFormData: this.form.value });
+    this.isLoading = true;
     this.authService.loginDeveloper({
       ...this.form.value,
     });
