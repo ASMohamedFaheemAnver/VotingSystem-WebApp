@@ -24,7 +24,7 @@
 .logo {
   width: 150px;
   height: 150px;
-  background: url("/assets/img/logo.png") center center/cover;
+  background: url("../../../assets/img/logo.png") center center/cover;
 }
 
 mat-form-field {
