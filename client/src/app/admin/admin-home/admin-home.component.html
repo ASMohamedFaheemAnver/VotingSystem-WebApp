@@ -3,7 +3,7 @@
   <button mat-raised-button color="primary">Create a member</button> -->
   <h1>Queries</h1>
   <button mat-raised-button color="primary" (click)="onViewAllMembers()">
-    View eligible members
+    View all members
   </button>
   <h1>First poll actions</h1>
   <button
@@ -50,3 +50,6 @@
     Get second poll results
   </button>
 </section>
+<div *ngIf="isLoading" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>

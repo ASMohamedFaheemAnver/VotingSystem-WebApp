@@ -5,10 +5,40 @@
   align-items: center;
 }
 
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #7dcfff;
+  padding: 20px;
+  width: 90%;
+  /* color: white; */
+  border-radius: 20px;
+  text-align: center;
+  position: absolute;
+  top: 100px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  background: url("/assets/img/logo.png") center center/cover;
+}
+
 mat-form-field {
   width: 300px;
 }
 
 button {
   width: 100px;
+}
+
+.secret {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }

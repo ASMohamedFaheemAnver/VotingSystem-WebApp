@@ -98,6 +98,7 @@ export class AuthService {
         this.router.navigateByUrl("member/member-home");
       },
       (err) => {
+        this.authStatusListenner.next(false);
         console.log(err);
       }
     );

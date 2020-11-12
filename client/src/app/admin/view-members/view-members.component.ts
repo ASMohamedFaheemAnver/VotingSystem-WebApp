@@ -14,12 +14,15 @@ export class ViewMembersComponent implements OnInit, OnDestroy {
     this.membersSub.unsubscribe();
   }
   public members;
+  public isLoading = false;
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.adminService.getAllMembers();
     this.membersSub = this.adminService
       .getMembersListener()
       .subscribe((members) => {
+        this.isLoading = false;
         this.members = members;
         console.log({ seperatedMembersFromViewMembers: this.members });
       });

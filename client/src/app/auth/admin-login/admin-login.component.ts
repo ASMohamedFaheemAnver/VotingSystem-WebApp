@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -9,9 +9,12 @@ import { AuthService } from "../auth.service";
   templateUrl: "./admin-login.component.html",
   styleUrls: ["./admin-login.component.css"],
 })
-export class AdminLoginComponent implements OnInit {
+export class AdminLoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   constructor(private authService: AuthService, private router: Router) {}
+  ngOnDestroy(): void {
+    this.authStatusListennerSub.unsubscribe();
+  }
   private isAuth = false;
   private userCategory;
   public isLoading = false;

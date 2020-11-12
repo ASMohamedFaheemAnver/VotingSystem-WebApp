@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { Member } from "../model/member.model";
 import { PollData } from "../model/poll-data.model";
@@ -23,6 +23,7 @@ export class AdminService {
     third: Member[];
     fourth: Member[];
   }>();
+  private pollTriggerListenner = new Subject<boolean>();
   private pollDataListenner = new Subject<PollData>();
 
   private pollResultsListenner = new Subject<PollResult[]>();
@@ -35,6 +36,10 @@ export class AdminService {
 
   getMembersListener() {
     return this.membersListenner;
+  }
+
+  getpollTriggerListenner() {
+    return this.pollTriggerListenner;
   }
 
   getPollDataListener() {
@@ -101,8 +106,10 @@ export class AdminService {
       (res) => {
         console.log(res);
         pollData.is_first_poll_enabled = true;
+        this.pollTriggerListenner.next(true);
       },
       (err) => {
+        this.pollTriggerListenner.next(false);
         console.log(err);
       }
     );
@@ -120,9 +127,13 @@ export class AdminService {
     this.apollo.mutate({ mutation: disableFirstPoll }).subscribe(
       (res) => {
         console.log(res);
+        this.pollTriggerListenner.next(true);
+
         pollData.is_first_poll_enabled = false;
       },
       (err) => {
+        this.pollTriggerListenner.next(false);
+
         console.log(err);
       }
     );
@@ -140,9 +151,13 @@ export class AdminService {
     this.apollo.mutate({ mutation: enableSecondPoll }).subscribe(
       (res) => {
         console.log(res);
+        this.pollTriggerListenner.next(true);
+
         pollData.is_second_poll_enabled = true;
       },
       (err) => {
+        this.pollTriggerListenner.next(false);
+
         console.log(err);
       }
     );
@@ -160,9 +175,13 @@ export class AdminService {
     this.apollo.mutate({ mutation: disableSecondPoll }).subscribe(
       (res) => {
         console.log(res);
+        this.pollTriggerListenner.next(true);
+
         pollData.is_second_poll_enabled = false;
       },
       (err) => {
+        this.pollTriggerListenner.next(false);
+
         console.log(err);
       }
     );
