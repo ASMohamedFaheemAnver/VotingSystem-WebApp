@@ -43,6 +43,7 @@ function getAllMembers() {
   const getAllMembers = gql`
   query {
     getAllMembers {
+      _id
       secret
       year
       gender
@@ -69,6 +70,7 @@ function getAllPositions() {
   const getAllPositions = gql`
     query {
       getAllPositions {
+        _id
         title
         eligible_year
         eligible_gender
@@ -115,5 +117,99 @@ function seedPositions() {
   })
 }
 
-seedMembers();
-seedPositions();
+
+
+function fuckTheBackEndWithHundredsOfConcurrentRequests() {
+  fs.readFile("members-fetched.json", "utf8", async function (err, data) {
+    if (err) {
+      console.log(err.message);
+    }
+    const members = JSON.parse(data);
+    console.log({ members: members });
+    console.log({ membersLength: members.length });
+
+    fs.readFile("position-fetched.json", "utf8", async (err, data) => {
+      const positions = JSON.parse(data);
+      console.log(positions);
+      for (let i = 0; i < members.length; i++) {
+        const loginMember = gql`
+                query {
+                    loginMember(data: { secret: "${members[i].secret}" }) {
+                      token
+                    }
+                  }
+              `;
+
+        const res = await client.query({ query: loginMember })
+
+        const token = res["data"].loginMember.token;
+        console.log({ loginMember: res });
+
+        const client2 = new ApolloClient({
+          uri: "https://freedom-voting-system.herokuapp.com/",
+          // uri: "http://localhost:4000/",
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        const createVotes = gql`
+                  mutation {
+                    createVotes(
+                      data: [
+                        {
+                          position: "${positions[0]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[1]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[2]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[3]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[4]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                        position: "${positions[5]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[6]._id}"
+                          to: "${members[i]._id}"
+                        }
+                        {
+                          position: "${positions[7]._id}"
+                          to: "${members[i]._id}"
+                        }
+                      ]
+                    ) {
+                      _id
+                    }
+                  }
+                `;
+
+        client2.mutate({ mutation: createVotes }).then(res => {
+          console.log({ createVotes: res["data"].createVotes, voter: i })
+        }).catch(err => {
+          console.log(err)
+        })
+
+      }
+    })
+
+  });
+}
+
+// seedMembers();
+// seedPositions();
+// getAllPositions();
+// getAllMembers();
+fuckTheBackEndWithHundredsOfConcurrentRequests();
