@@ -13,6 +13,7 @@
     </button>
   </div>
   <button
+    [disabled]="!isVoteValid"
     *ngIf="positions.length > 0"
     (click)="onCreateVotes()"
     class="submit"

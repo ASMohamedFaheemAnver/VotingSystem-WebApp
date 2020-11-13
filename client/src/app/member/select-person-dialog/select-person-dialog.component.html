@@ -1,5 +1,13 @@
 <section class="wrapper">
   <h1>- Select a person -</h1>
+  <h2>
+    {{
+      "From " +
+        (data["eligible_year"] === 2 ? "2nd" : "3rd") +
+        " year " +
+        (data["eligible_gender"] === "M" ? "boys" : "girls")
+    }}
+  </h2>
   <mat-dialog-content>
     <div
       [mat-dialog-close]="member"

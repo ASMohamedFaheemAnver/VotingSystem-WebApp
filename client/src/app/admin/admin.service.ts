@@ -187,7 +187,7 @@ export class AdminService {
     );
   }
 
-  getFirstPollResult(pollCount: number) {
+  getPollResult(pollCount: number) {
     const getFirstPollAllResult = gql`
       query {
         getFirstPollAllResult {

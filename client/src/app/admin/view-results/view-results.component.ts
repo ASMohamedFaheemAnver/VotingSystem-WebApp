@@ -14,6 +14,7 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
   private pollResultsSub: Subscription;
   public pollResults: PollResult[];
   public pollCount: number;
+  public isLoading = false;
 
   constructor(
     private adminService: AdminService,
@@ -25,9 +26,11 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.pollResultsSub = this.adminService
       .getpollResultsListenner()
       .subscribe((pollResults) => {
+        this.isLoading = false;
         console.log({ viewResultsComponent: pollResults });
         pollResults = pollResults.map((pollResult) => {
           return {
@@ -48,7 +51,7 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
       if (paramMap.has("pollCount")) {
         this.pollCount = parseInt(paramMap.get("pollCount"));
         console.log({ viewPollResultRouteParam: this.pollCount });
-        this.adminService.getFirstPollResult(this.pollCount);
+        this.adminService.getPollResult(this.pollCount);
       }
     });
   }
