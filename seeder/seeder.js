@@ -115,5 +115,5 @@ function seedPositions() {
   })
 }
 
-// seedMembers();
+seedMembers();
 seedPositions();

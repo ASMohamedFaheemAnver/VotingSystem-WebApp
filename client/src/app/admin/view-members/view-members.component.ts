@@ -9,9 +9,11 @@ import { AdminService } from "../admin.service";
 })
 export class ViewMembersComponent implements OnInit, OnDestroy {
   private membersSub: Subscription;
+  private adminStatusListenerSub: Subscription;
   constructor(private adminService: AdminService) {}
   ngOnDestroy(): void {
     this.membersSub.unsubscribe();
+    this.adminStatusListenerSub.unsubscribe();
   }
   public members;
   public isLoading = false;
@@ -25,6 +27,11 @@ export class ViewMembersComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.members = members;
         console.log({ seperatedMembersFromViewMembers: this.members });
+      });
+    this.adminStatusListenerSub = this.adminService
+      .getAdminStatusListenner()
+      .subscribe((isPassed) => {
+        this.isLoading = isPassed;
       });
   }
 }

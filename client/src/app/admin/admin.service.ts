@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
-import { Subject, Subscription } from "rxjs";
-import { AuthService } from "../auth/auth.service";
+import { Subject } from "rxjs";
 import { Member } from "../model/member.model";
 import { PollData } from "../model/poll-data.model";
 import { PollResult } from "../model/poll-result.model";
@@ -24,15 +22,12 @@ export class AdminService {
     fourth: Member[];
   }>();
   private pollTriggerListenner = new Subject<boolean>();
+  private adminStatusListenner = new Subject<boolean>();
   private pollDataListenner = new Subject<PollData>();
 
   private pollResultsListenner = new Subject<PollResult[]>();
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private apollo: Apollo
-  ) {}
+  constructor(private apollo: Apollo) {}
 
   getMembersListener() {
     return this.membersListenner;
@@ -40,6 +35,9 @@ export class AdminService {
 
   getpollTriggerListenner() {
     return this.pollTriggerListenner;
+  }
+  getAdminStatusListenner() {
+    return this.adminStatusListenner;
   }
 
   getPollDataListener() {
@@ -89,6 +87,7 @@ export class AdminService {
       },
       (err) => {
         console.log(err);
+        this.adminStatusListenner.next(false);
       }
     );
   }
@@ -187,7 +186,7 @@ export class AdminService {
     );
   }
 
-  getFirstPollResult(pollCount: number) {
+  getPollResult(pollCount: number) {
     const getFirstPollAllResult = gql`
       query {
         getFirstPollAllResult {
@@ -236,14 +235,20 @@ export class AdminService {
         query: pollCount == 1 ? getFirstPollAllResult : getSecondPollAllResult,
         fetchPolicy: "network-only",
       })
-      .subscribe((res) => {
-        this.pollResults =
-          pollCount == 1
-            ? res["data"]["getFirstPollAllResult"]
-            : res["data"]["getSecondPollAllResult"];
-        console.log({ getAllPollResult: this.pollResults });
-        this.pollResultsListenner.next([...this.pollResults]);
-      });
+      .subscribe(
+        (res) => {
+          this.pollResults =
+            pollCount == 1
+              ? res["data"]["getFirstPollAllResult"]
+              : res["data"]["getSecondPollAllResult"];
+          console.log({ getAllPollResult: this.pollResults });
+          this.pollResultsListenner.next([...this.pollResults]);
+        },
+        (err) => {
+          console.log(err);
+          this.adminStatusListenner.next(false);
+        }
+      );
   }
 
   makeAMemberEligible(_id: string, position: Position) {
@@ -255,35 +260,43 @@ export class AdminService {
       }
     `;
 
-    this.apollo.mutate({ mutation: makeAMemberEligible }).subscribe((res) => {
-      console.log({ makeAMemberEligible: res["data"]["makeAMemberEligible"] });
+    this.apollo.mutate({ mutation: makeAMemberEligible }).subscribe(
+      (res) => {
+        console.log({
+          makeAMemberEligible: res["data"]["makeAMemberEligible"],
+        });
 
-      this.pollResults = this.pollResults.map((pollResult) => {
-        return {
-          ...pollResult,
-          eligible_member_infos: pollResult.eligible_member_infos.map(
-            (member_info) => {
-              if (member_info.member._id === _id) {
-                return {
-                  ...member_info,
-                  member: {
-                    ...member_info.member,
-                    eligible_for: [
-                      ...member_info.member.eligible_for,
-                      position,
-                    ],
-                  },
-                };
+        this.pollResults = this.pollResults.map((pollResult) => {
+          return {
+            ...pollResult,
+            eligible_member_infos: pollResult.eligible_member_infos.map(
+              (member_info) => {
+                if (member_info.member._id === _id) {
+                  return {
+                    ...member_info,
+                    member: {
+                      ...member_info.member,
+                      eligible_for: [
+                        ...member_info.member.eligible_for,
+                        position,
+                      ],
+                    },
+                  };
+                }
+                return member_info;
               }
-              return member_info;
-            }
-          ),
-        };
-      });
+            ),
+          };
+        });
 
-      console.log({ getAllPollResult: this.pollResults });
-      this.pollResultsListenner.next([...this.pollResults]);
-    });
+        console.log({ getAllPollResult: this.pollResults });
+        this.pollResultsListenner.next([...this.pollResults]);
+      },
+      (err) => {
+        console.log(err);
+        this.adminStatusListenner.next(false);
+      }
+    );
   }
 
   makeAMemberNotEligible(_id: string, position: Position) {
@@ -295,9 +308,8 @@ export class AdminService {
       }
     `;
 
-    this.apollo
-      .mutate({ mutation: makeAMemberNotEligible })
-      .subscribe((res) => {
+    this.apollo.mutate({ mutation: makeAMemberNotEligible }).subscribe(
+      (res) => {
         console.log({
           makeAMemberNotEligible: res["data"]["makeAMemberNotEligible"],
         });
@@ -328,7 +340,12 @@ export class AdminService {
 
         console.log({ getAllPollResult: this.pollResults });
         this.pollResultsListenner.next([...this.pollResults]);
-      });
+      },
+      (err) => {
+        console.log(err);
+        this.adminStatusListenner.next(false);
+      }
+    );
   }
 
   getPollData() {
@@ -341,10 +358,16 @@ export class AdminService {
       }
     `;
 
-    this.apollo.query({ query: getPollData }).subscribe((res) => {
-      console.log({ getPollData: res["data"]["getPollData"] });
-      this.pollData = res["data"]["getPollData"];
-      this.pollDataListenner.next({ ...this.pollData });
-    });
+    this.apollo.query({ query: getPollData }).subscribe(
+      (res) => {
+        console.log({ getPollData: res["data"]["getPollData"] });
+        this.pollData = res["data"]["getPollData"];
+        this.pollDataListenner.next({ ...this.pollData });
+      },
+      (err) => {
+        console.log(err);
+        this.adminStatusListenner.next(false);
+      }
+    );
   }
 }

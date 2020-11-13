@@ -12,22 +12,25 @@ import { AdminService } from "../admin.service";
 })
 export class ViewResultsComponent implements OnInit, OnDestroy {
   private pollResultsSub: Subscription;
+  private adminStatusListenerSub: Subscription;
   public pollResults: PollResult[];
   public pollCount: number;
+  public isLoading = false;
 
   constructor(
     private adminService: AdminService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
   ngOnDestroy(): void {
     this.pollResultsSub.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.pollResultsSub = this.adminService
       .getpollResultsListenner()
       .subscribe((pollResults) => {
+        this.isLoading = false;
         console.log({ viewResultsComponent: pollResults });
         pollResults = pollResults.map((pollResult) => {
           return {
@@ -48,9 +51,15 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
       if (paramMap.has("pollCount")) {
         this.pollCount = parseInt(paramMap.get("pollCount"));
         console.log({ viewPollResultRouteParam: this.pollCount });
-        this.adminService.getFirstPollResult(this.pollCount);
+        this.adminService.getPollResult(this.pollCount);
       }
     });
+
+    this.adminStatusListenerSub = this.adminService
+      .getAdminStatusListenner()
+      .subscribe((isPassed) => {
+        this.isLoading = isPassed;
+      });
   }
 
   onMakeEligible(_id: string, position: Position) {

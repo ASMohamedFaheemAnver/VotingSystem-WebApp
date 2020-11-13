@@ -23,6 +23,7 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
   public positions: Position[] = [];
   public memberVoteData: MemberVoteData;
   public isLoading = false;
+  public isVoteValid = false;
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -66,11 +67,21 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
     selectPersonDialogRef.afterClosed().subscribe((member) => {
       console.log({ memberHomeSelectedMember: member, position: position });
       // position = { ...position, to: member };
+      if (!member) {
+        return;
+      }
       this.positions = this.positions.map((pPosition) => {
         if (pPosition === position) {
           return { ...position, to: member };
         }
         return pPosition;
+      });
+
+      this.positions.forEach((position) => {
+        if (!position.to) {
+          return (this.isVoteValid = false);
+        }
+        this.isVoteValid = true;
       });
     });
   }

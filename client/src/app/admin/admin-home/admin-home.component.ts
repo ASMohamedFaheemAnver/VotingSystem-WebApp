@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { PollData } from "src/app/model/poll-data.model";
@@ -9,12 +9,19 @@ import { AdminService } from "../admin.service";
   templateUrl: "./admin-home.component.html",
   styleUrls: ["./admin-home.component.css"],
 })
-export class AdminHomeComponent implements OnInit {
+export class AdminHomeComponent implements OnInit, OnDestroy {
   private pollDataSub: Subscription;
   private pollTriggerListenerSub: Subscription;
+  private adminStatusListenerSub: Subscription;
+
   public isLoading = false;
   public pollData: PollData;
   constructor(private router: Router, private adminService: AdminService) {}
+  ngOnDestroy(): void {
+    this.pollDataSub.unsubscribe();
+    this.pollTriggerListenerSub.unsubscribe();
+    this.adminStatusListenerSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -30,6 +37,12 @@ export class AdminHomeComponent implements OnInit {
       .getpollTriggerListenner()
       .subscribe((isTriggered) => {
         this.isLoading = false;
+      });
+
+    this.adminStatusListenerSub = this.adminService
+      .getAdminStatusListenner()
+      .subscribe((isPassed) => {
+        this.isLoading = isPassed;
       });
   }
 
