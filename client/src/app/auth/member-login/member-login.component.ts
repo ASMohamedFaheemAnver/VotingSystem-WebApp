@@ -22,7 +22,7 @@ export class MemberLoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isAuth = this.authService.isUserAuth();
     this.userCategory = this.authService.getUserCategory();
-    if (this.isAuth && this.userCategory === "admin") {
+    if (this.isAuth && this.userCategory === "developer") {
       this.router.navigateByUrl("/admin/admin-home");
     } else if (this.isAuth && this.userCategory === "member") {
       this.router.navigateByUrl("/member/member-home");
