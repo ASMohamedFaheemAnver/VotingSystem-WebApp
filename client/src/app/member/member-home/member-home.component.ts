@@ -20,6 +20,7 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
   private positionsSub: Subscription;
   private createVoteSub: Subscription;
   private memberVoteDataSub: Subscription;
+  private memberStatusListenerSub: Subscription;
   public positions: Position[] = [];
   public memberVoteData: MemberVoteData;
   public isLoading = false;
@@ -49,6 +50,12 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
       .subscribe((isCreated) => {
         this.isLoading = false;
         this.memberVoteData.is_voted = isCreated;
+      });
+
+    this.memberStatusListenerSub = this.memberService
+      .getMemberStatusListener()
+      .subscribe((isPassed) => {
+        this.isLoading = isPassed;
       });
   }
 

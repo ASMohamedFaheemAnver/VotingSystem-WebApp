@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
 import { Subject } from "rxjs";
-import { AuthService } from "../auth/auth.service";
 import { MemberVoteData } from "../model/member-vote-data.model";
 import { Member } from "../model/member.model";
 import { Position } from "../model/position.model";
@@ -15,18 +13,19 @@ export class MemberService {
   private createVoteListenner = new Subject<boolean>();
   private membersByPositionListenner = new Subject<Member[]>();
   private memberVoteDataListenner = new Subject<MemberVoteData>();
+  private memberStatusListener = new Subject<boolean>();
   private positions: Position[] = [];
   private membersByPosition: Member[] = [];
   private memberVoteData: MemberVoteData;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private apollo: Apollo
-  ) {}
+  constructor(private apollo: Apollo) {}
 
   getPositionsListener() {
     return this.positionsListenner;
+  }
+
+  getMemberStatusListener() {
+    return this.memberStatusListener;
   }
 
   getCreateVoteListenner() {
@@ -53,11 +52,17 @@ export class MemberService {
       }
     `;
 
-    this.apollo.query({ query: getAllPositions }).subscribe((res) => {
-      this.positions = res.data["getAllPositions"];
-      console.log({ getAllPositions: this.positions });
-      this.positionsListenner.next([...this.positions]);
-    });
+    this.apollo.query({ query: getAllPositions }).subscribe(
+      (res) => {
+        this.positions = res.data["getAllPositions"];
+        console.log({ getAllPositions: this.positions });
+        this.positionsListenner.next([...this.positions]);
+      },
+      (err) => {
+        console.log(err);
+        this.memberStatusListener.next(false);
+      }
+    );
   }
 
   createVotes(positions: Position[]) {
@@ -130,11 +135,17 @@ export class MemberService {
 
     this.apollo
       .query({ query: getAllMembersByPosition, fetchPolicy: "network-only" })
-      .subscribe((res) => {
-        this.membersByPosition = res.data["getAllMembersByPosition"];
-        console.log({ getAllMembersByPosition: this.membersByPosition });
-        this.membersByPositionListenner.next([...this.membersByPosition]);
-      });
+      .subscribe(
+        (res) => {
+          this.membersByPosition = res.data["getAllMembersByPosition"];
+          console.log({ getAllMembersByPosition: this.membersByPosition });
+          this.membersByPositionListenner.next([...this.membersByPosition]);
+        },
+        (err) => {
+          console.log(err);
+          this.memberStatusListener.next(false);
+        }
+      );
   }
 
   getMemberVoteData() {
@@ -149,10 +160,16 @@ export class MemberService {
 
     this.apollo
       .query({ query: getMemberVoteData, fetchPolicy: "no-cache" })
-      .subscribe((res) => {
-        this.memberVoteData = res.data["getMemberVoteData"];
-        console.log({ getMemberVoteData: this.memberVoteData });
-        this.memberVoteDataListenner.next(this.memberVoteData);
-      });
+      .subscribe(
+        (res) => {
+          this.memberVoteData = res.data["getMemberVoteData"];
+          console.log({ getMemberVoteData: this.memberVoteData });
+          this.memberVoteDataListenner.next(this.memberVoteData);
+        },
+        (err) => {
+          console.log(err);
+          this.memberStatusListener.next(false);
+        }
+      );
   }
 }
