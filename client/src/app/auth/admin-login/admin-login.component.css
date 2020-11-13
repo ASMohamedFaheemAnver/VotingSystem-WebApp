@@ -1,7 +1,9 @@
-.member-login {
+.admin-login {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
+  text-align: center;
 }
 
 .member-login form h1 {
