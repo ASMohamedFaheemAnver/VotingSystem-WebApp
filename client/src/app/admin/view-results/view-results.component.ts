@@ -12,14 +12,14 @@ import { AdminService } from "../admin.service";
 })
 export class ViewResultsComponent implements OnInit, OnDestroy {
   private pollResultsSub: Subscription;
+  private adminStatusListenerSub: Subscription;
   public pollResults: PollResult[];
   public pollCount: number;
   public isLoading = false;
 
   constructor(
     private adminService: AdminService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
   ngOnDestroy(): void {
     this.pollResultsSub.unsubscribe();
@@ -54,6 +54,12 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
         this.adminService.getPollResult(this.pollCount);
       }
     });
+
+    this.adminStatusListenerSub = this.adminService
+      .getAdminStatusListenner()
+      .subscribe((isPassed) => {
+        this.isLoading = isPassed;
+      });
   }
 
   onMakeEligible(_id: string, position: Position) {

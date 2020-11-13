@@ -1,6 +1,8 @@
 <section class="wrapper">
   <div class="inner-wrapper" *ngFor="let pollResult of pollResults">
-    <h1>{{ pollResult.position.title }}</h1>
+    <h1>
+      {{ pollResult.position.title }}
+    </h1>
     <div class="member-info-wrapper">
       <div class="member-info">
         <p>Name</p>
@@ -8,6 +10,9 @@
         <p>Recieved Votes</p>
         <p *ngIf="pollCount === 1">Action</p>
       </div>
+      <h1 class="red" *ngIf="pollResult.eligible_member_infos.length === 0">
+        No data to show for this position.
+      </h1>
       <div
         class="member-info"
         *ngFor="let memberInfo of pollResult.eligible_member_infos.slice(0, 5)"
@@ -45,7 +50,7 @@
           "
           color="warn"
         >
-          <span>Remove from eligible</span>
+          <span>Remove</span>
         </button>
       </div>
     </div>

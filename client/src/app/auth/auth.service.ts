@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
@@ -18,11 +17,7 @@ export class AuthService {
   private authStatusListenner = new Subject<boolean>();
   private userCategoryListenner = new Subject<string>();
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private apollo: Apollo
-  ) {}
+  constructor(private router: Router, private apollo: Apollo) {}
 
   getAuthStatusListener() {
     return this.authStatusListenner;

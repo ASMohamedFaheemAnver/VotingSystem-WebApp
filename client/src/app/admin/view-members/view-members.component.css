@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 50px;
+  margin-bottom: 50px;
 }
 
 .row {
@@ -17,4 +18,10 @@
 .row p {
   /* margin: 0 50px; */
   flex: 1;
+}
+
+@media (max-width: 1028px) {
+  .row {
+    width: 100%;
+  }
 }
