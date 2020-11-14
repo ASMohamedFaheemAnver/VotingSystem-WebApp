@@ -1,0 +1,21 @@
+p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #3f51b5;
+  color: white;
+}
+
+@media (max-height: 668px) {
+  .footer {
+    position: relative;
+  }
+}

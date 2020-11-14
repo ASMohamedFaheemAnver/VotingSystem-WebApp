@@ -19,6 +19,7 @@ import { ViewMembersComponent } from "./admin/view-members/view-members.componen
 import { SelectPersonDialogComponent } from "./member/select-person-dialog/select-person-dialog.component";
 import { ViewResultsComponent } from "./admin/view-results/view-results.component";
 import { GraphQLModule } from "./graphql.module";
+import { FooterComponent } from './shared/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { GraphQLModule } from "./graphql.module";
     ViewMembersComponent,
     SelectPersonDialogComponent,
     ViewResultsComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
