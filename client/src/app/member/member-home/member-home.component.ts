@@ -84,12 +84,13 @@ export class MemberHomeComponent implements OnInit, OnDestroy {
         return pPosition;
       });
 
-      this.positions.forEach((position) => {
+      for (let x = 0; x < this.positions.length; x++) {
+        let position = this.positions[x];
         if (!position.to) {
           return (this.isVoteValid = false);
         }
         this.isVoteValid = true;
-      });
+      }
     });
   }
 
