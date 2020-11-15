@@ -15,6 +15,14 @@
   margin: 20px 0;
 }
 
+.form-controll p {
+  flex: 1;
+}
+
+.form-controll button {
+  flex: 1;
+}
+
 .submit {
   width: 200px;
   margin-top: 20px;
