@@ -358,16 +358,18 @@ export class AdminService {
       }
     `;
 
-    this.apollo.query({ query: getPollData }).subscribe(
-      (res) => {
-        console.log({ getPollData: res["data"]["getPollData"] });
-        this.pollData = res["data"]["getPollData"];
-        this.pollDataListenner.next({ ...this.pollData });
-      },
-      (err) => {
-        console.log(err);
-        this.adminStatusListenner.next(false);
-      }
-    );
+    this.apollo
+      .query({ query: getPollData, fetchPolicy: "network-only" })
+      .subscribe(
+        (res) => {
+          console.log({ getPollData: res["data"]["getPollData"] });
+          this.pollData = res["data"]["getPollData"];
+          this.pollDataListenner.next({ ...this.pollData });
+        },
+        (err) => {
+          console.log(err);
+          this.adminStatusListenner.next(false);
+        }
+      );
   }
 }
