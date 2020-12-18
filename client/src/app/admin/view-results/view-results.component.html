@@ -15,7 +15,7 @@
       </h1>
       <div
         class="member-info"
-        *ngFor="let memberInfo of pollResult.eligible_member_infos.slice(0, 5)"
+        *ngFor="let memberInfo of pollResult.eligible_member_infos"
       >
         <p>{{ memberInfo.member.name }}</p>
         <p>{{ memberInfo.member.year }}</p>
