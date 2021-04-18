@@ -23,22 +23,32 @@ export function createApollo(
     },
   }));
 
-  const error = onError(({ graphQLErrors, networkError }) => {
+  const error = onError(({ graphQLErrors, networkError, response }) => {
+    // console.log({ ...response });
+
     if (graphQLErrors) {
-      graphQLErrors.map(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
-            locations
-          )}, Path: ${path}`
-        )
-      );
+      // graphQLErrors.map(({ message, locations, path }) =>
+      //   console.log(
+      //     `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+      //       locations
+      //     )}, Path: ${path}`
+      //   )
+      // );
 
       dialog.open(ErrorComponent, {
         data: graphQLErrors,
         disableClose: true,
       });
     }
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) {
+      if (!response) {
+        dialog.open(ErrorComponent, {
+          data: [{ message: "server down." }],
+          disableClose: true,
+        });
+      }
+      // console.log(`[Network error]: ${networkError}`);
+    }
   });
 
   const auth = setContext((operation, context) => {
