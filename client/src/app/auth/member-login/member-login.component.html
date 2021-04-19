@@ -5,11 +5,12 @@
     <h1>Association of Islamic Students</h1>
     <h1>University of Kelaniya</h1>
   </div>
-  <div class="secret">
+  <form class="secret">
     <h1>Enter your secret</h1>
     <mat-form-field appearance="fill">
       <input #secret matInput [type]="hide ? 'password' : 'text'" />
       <button
+        type="button"
         mat-icon-button
         matSuffix
         (click)="hide = !hide"
@@ -20,6 +21,7 @@
       </button>
     </mat-form-field>
     <button
+      type="submit"
       [disabled]="secret.value.length !== 10"
       (click)="onMemberLogin(secret.value)"
       mat-raised-button
@@ -27,7 +29,7 @@
     >
       Verify
     </button>
-  </div>
+  </form>
 </section>
 <div *ngIf="isLoading" class="spinner">
   <mat-spinner></mat-spinner>
