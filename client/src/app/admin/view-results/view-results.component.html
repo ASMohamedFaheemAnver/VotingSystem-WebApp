@@ -17,35 +17,29 @@
         class="member-info"
         *ngFor="let memberInfo of pollResult.eligible_member_infos"
       >
-        <p>{{ memberInfo.member.name }}</p>
-        <p>{{ memberInfo.member.year }}</p>
-        <p>{{ memberInfo.vote_recieved }}</p>
+        <p>{{ memberInfo.name }}</p>
+        <p>{{ memberInfo.year }}</p>
+        <p>{{ memberInfo.received_votes }}</p>
 
         <button
           mat-button
           *ngIf="
-            memberInfo.member.eligible_for.length >= 0 &&
-            !IsIndexExist(
-              memberInfo.member.eligible_for,
-              pollResult.position._id
-            ) &&
+            memberInfo.eligible_for.length >= 0 &&
+            !IsIndexExist(memberInfo.eligible_for, pollResult.position._id) &&
             pollCount === 1
           "
-          (click)="onMakeEligible(memberInfo.member._id, pollResult.position)"
+          (click)="onMakeEligible(memberInfo._id, pollResult.position)"
         >
           <span>Make eligible</span>
         </button>
         <button
           mat-button
           (click)="
-            onMakeAMemberNotEligible(memberInfo.member._id, pollResult.position)
+            onMakeAMemberNotEligible(memberInfo._id, pollResult.position)
           "
           *ngIf="
-            memberInfo.member.eligible_for.length > 0 &&
-            IsIndexExist(
-              memberInfo.member.eligible_for,
-              pollResult.position._id
-            ) &&
+            memberInfo.eligible_for.length > 0 &&
+            IsIndexExist(memberInfo.eligible_for, pollResult.position._id) &&
             pollCount === 1
           "
           color="warn"

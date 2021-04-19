@@ -3,8 +3,11 @@ import { Position } from "./position.model";
 
 export interface PollResult {
   eligible_member_infos: {
-    member: Member;
-    vote_recieved: number;
+    _id: String;
+    name: String;
+    year: Number;
+    received_votes: Number;
+    eligible_for: Position[];
   }[];
   position: Position;
 }

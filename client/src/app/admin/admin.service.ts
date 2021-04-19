@@ -195,15 +195,13 @@ export class AdminService {
             title
           }
           eligible_member_infos {
-            member {
+            _id
+            name
+            year
+            eligible_for {
               _id
-              name
-              year
-              eligible_for {
-                _id
-              }
             }
-            vote_recieved
+            received_votes
           }
         }
       }
@@ -213,18 +211,17 @@ export class AdminService {
       query {
         getSecondPollAllResult {
           position {
+            _id
             title
           }
           eligible_member_infos {
-            member {
+            _id
+            name
+            year
+            eligible_for {
               _id
-              name
-              year
-              eligible_for {
-                _id
-              }
             }
-            vote_recieved
+            received_votes
           }
         }
       }
@@ -271,16 +268,10 @@ export class AdminService {
             ...pollResult,
             eligible_member_infos: pollResult.eligible_member_infos.map(
               (member_info) => {
-                if (member_info.member._id === _id) {
+                if (member_info._id === _id) {
                   return {
                     ...member_info,
-                    member: {
-                      ...member_info.member,
-                      eligible_for: [
-                        ...member_info.member.eligible_for,
-                        position,
-                      ],
-                    },
+                    eligible_for: [...member_info.eligible_for, position],
                   };
                 }
                 return member_info;
@@ -319,17 +310,14 @@ export class AdminService {
             ...pollResult,
             eligible_member_infos: pollResult.eligible_member_infos.map(
               (member_info) => {
-                if (member_info.member._id === _id) {
+                if (member_info._id === _id) {
                   return {
                     ...member_info,
-                    member: {
-                      ...member_info.member,
-                      eligible_for: [
-                        ...member_info.member.eligible_for.filter(
-                          (pPosition) => pPosition._id !== position._id
-                        ),
-                      ],
-                    },
+                    eligible_for: [
+                      ...member_info.eligible_for.filter(
+                        (pPosition) => pPosition._id !== position._id
+                      ),
+                    ],
                   };
                 }
                 return member_info;

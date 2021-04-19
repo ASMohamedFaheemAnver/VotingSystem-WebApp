@@ -32,18 +32,6 @@ export class ViewResultsComponent implements OnInit, OnDestroy {
       .subscribe((pollResults) => {
         this.isLoading = false;
         console.log({ viewResultsComponent: pollResults });
-        pollResults = pollResults.map((pollResult) => {
-          return {
-            ...pollResult,
-            eligible_member_infos: pollResult.eligible_member_infos
-              .slice()
-              .sort(function (x, y) {
-                if (x.vote_recieved > y.vote_recieved) return -1;
-                if (x.vote_recieved < y.vote_recieved) return 1;
-                return 0;
-              }),
-          };
-        });
         this.pollResults = pollResults;
       });
 
