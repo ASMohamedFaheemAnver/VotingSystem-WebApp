@@ -230,7 +230,7 @@ export class AdminService {
     this.apollo
       .query({
         query: pollCount == 1 ? getFirstPollAllResult : getSecondPollAllResult,
-        fetchPolicy: "network-only",
+        fetchPolicy: "no-cache",
       })
       .subscribe(
         (res) => {
@@ -347,7 +347,7 @@ export class AdminService {
     `;
 
     this.apollo
-      .query({ query: getPollData, fetchPolicy: "network-only" })
+      .query({ query: getPollData, fetchPolicy: "no-cache" })
       .subscribe(
         (res) => {
           console.log({ getPollData: res["data"]["getPollData"] });
